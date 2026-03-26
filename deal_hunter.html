@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deal Hunter 🐻 — Personal Shopper</title>
+<style>
+  :root {
+    --gold: #ffd700;
+    --gold-dim: rgba(255,215,0,0.15);
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --border: rgba(255,215,0,0.2);
+    --text: #e8e8e8;
+    --muted: #888;
+    --green: #4ade80;
+    --red: #f87171;
+    --blue: #60a5fa;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(rgba(255,215,0,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,215,0,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events:none; z-index:0;
+  }
+  .wrap { position:relative; z-index:1; max-width:1100px; margin:0 auto; padding:0 1.5rem 4rem; }
+
+  /* HEADER */
+  header {
+    text-align:center; padding:3rem 0 2rem;
+    border-bottom:1px solid var(--border); margin-bottom:2.5rem;
+  }
+  header h1 { font-size:2.4rem; color:var(--gold); letter-spacing:-0.5px; }
+  header p { color:var(--muted); margin-top:.5rem; font-size:1rem; }
+
+  /* CARD */
+  .card {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:1.8rem;
+    margin-bottom:1.5rem;
+  }
+  .card h2 { font-size:1.1rem; color:var(--gold); margin-bottom:1.2rem; display:flex; align-items:center; gap:.5rem; }
+
+  /* FORM */
+  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  @media(max-width:640px){ .form-grid{ grid-template-columns:1fr; } }
+  .field { display:flex; flex-direction:column; gap:.4rem; }
+  .field.full { grid-column:1/-1; }
+  label { font-size:.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+  input, select, textarea {
+    background:rgba(255,255,255,0.04);
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:.75rem 1rem;
+    border-radius:8px;
+    font-size:.95rem;
+    font-family:inherit;
+    width:100%;
+    transition:border-color .2s;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline:none; border-color:var(--gold);
+  }
+  input::placeholder, textarea::placeholder { color:#555; }
+
+  /* TOGGLE PILLS */
+  .pills { display:flex; flex-wrap:wrap; gap:.5rem; }
+  .pill {
+    padding:.4rem 1rem; border-radius:999px;
+    border:1px solid var(--border);
+    background:transparent; color:var(--muted);
+    cursor:pointer; font-size:.85rem; transition:all .2s;
+  }
+  .pill.active { background:var(--gold); color:#000; border-color:var(--gold); font-weight:600; }
+
+  /* SEARCH BTN */
+  .search-btn {
+    width:100%; padding:1rem;
+    background:linear-gradient(135deg,#ffd700,#ffed4e);
+    color:#000; border:none; border-radius:8px;
+    font-size:1.05rem; font-weight:700;
+    cursor:pointer; transition:all .2s; margin-top:.5rem;
+  }
+  .search-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(255,215,0,.35); }
+
+  /* RESULTS */
+  #results { display:none; }
+  .best-deal {
+    background:linear-gradient(135deg,rgba(255,215,0,.1),rgba(255,215,0,.04));
+    border:2px solid var(--gold);
+    border-radius:12px; padding:1.8rem; margin-bottom:1.5rem;
+    position:relative; overflow:hidden;
+  }
+  .best-deal::before {
+    content:'BEST DEAL'; position:absolute; top:1rem; right:1rem;
+    background:var(--gold); color:#000; font-size:.7rem; font-weight:800;
+    padding:.25rem .6rem; border-radius:4px; letter-spacing:.1em;
+  }
+  .best-deal .price { font-size:2.2rem; font-weight:800; color:var(--gold); }
+  .best-deal .retailer { font-size:1rem; color:var(--muted); margin-bottom:.5rem; }
+  .savings-pill {
+    display:inline-block; background:rgba(74,222,128,.15);
+    border:1px solid var(--green); color:var(--green);
+    font-size:.8rem; font-weight:700; padding:.25rem .75rem; border-radius:999px;
+    margin-top:.5rem;
+  }
+
+  /* RETAILER TABLE */
+  .retailer-grid { display:grid; gap:.75rem; }
+  .retailer-row {
+    display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr 1fr 1fr;
+    gap:.5rem; align-items:center;
+    background:rgba(255,255,255,.025);
+    border:1px solid var(--border);
+    border-radius:8px; padding:1rem 1.2rem;
+    transition:border-color .2s;
+  }
+  .retailer-row:hover { border-color:rgba(255,215,0,.5); }
+  .retailer-row.winner { border-color:var(--gold); background:rgba(255,215,0,.06); }
+  .retailer-name { font-weight:600; }
+  .retailer-row .col { text-align:right; font-size:.9rem; }
+  .col-header { color:var(--muted); font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; }
+  .strike { text-decoration:line-through; color:var(--muted); font-size:.85rem; }
+  .final { font-weight:700; color:var(--gold); }
+  .badge {
+    display:inline-block; font-size:.7rem; padding:.2rem .5rem;
+    border-radius:4px; font-weight:600;
+  }
+  .badge-green { background:rgba(74,222,128,.15); color:var(--green); }
+  .badge-blue  { background:rgba(96,165,250,.15); color:var(--blue); }
+
+  /* DISCOUNT BREAKDOWN */
+  .breakdown { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:.75rem; }
+  .breakdown-item {
+    background:rgba(255,255,255,.03); border:1px solid var(--border);
+    border-radius:8px; padding:1rem; text-align:center;
+  }
+  .breakdown-item .icon { font-size:1.6rem; margin-bottom:.4rem; }
+  .breakdown-item .label { font-size:.75rem; color:var(--muted); }
+  .breakdown-item .val { font-size:1.1rem; font-weight:700; color:var(--green); }
+
+  /* SEASONAL */
+  .month-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; }
+  @media(max-width:640px){ .month-grid{ grid-template-columns:repeat(3,1fr); } }
+  .month-block {
+    border-radius:8px; padding:.75rem; text-align:center; font-size:.8rem;
+    border:1px solid var(--border);
+  }
+  .month-block.hot { border-color:var(--green); background:rgba(74,222,128,.08); }
+  .month-block.warm { border-color:var(--gold); background:rgba(255,215,0,.06); }
+  .month-block.cold { background:rgba(255,255,255,.02); }
+  .month-block .m { font-weight:700; margin-bottom:.3rem; }
+  .month-block .score { font-size:1rem; }
+
+  /* TIPS */
+  .tip-list { list-style:none; display:grid; gap:.6rem; }
+  .tip-list li {
+    padding:.75rem 1rem; background:rgba(255,255,255,.025);
+    border-left:3px solid var(--gold); border-radius:0 8px 8px 0;
+    font-size:.9rem;
+  }
+
+  /* LOADER */
+  #loader { display:none; text-align:center; padding:2rem; color:var(--muted); }
+  .spinner {
+    display:inline-block; width:32px; height:32px;
+    border:3px solid var(--border); border-top-color:var(--gold);
+    border-radius:50%; animation:spin .8s linear infinite; margin-bottom:.75rem;
+  }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  /* SEASONAL FLAG */
+  .season-flag {
+    display:inline-flex; align-items:center; gap:.4rem;
+    background:rgba(74,222,128,.1); border:1px solid var(--green);
+    color:var(--green); font-size:.8rem; padding:.3rem .8rem;
+    border-radius:999px; font-weight:600; margin-top:.5rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>🐻 Deal Hunter</h1>
+    <p>Stack every discount. Find the lowest price. Never overpay.</p>
+  </header>
+
+  <!-- SEARCH FORM -->
+  <div class="card">
+    <h2>🔍 What are you shopping for?</h2>
+    <div class="form-grid">
+      <div class="field full">
+        <label>Product</label>
+        <input id="product" type="text" placeholder='e.g. "46 inch TV", "AirPods Pro", "Nike Air Max"' />
+      </div>
+      <div class="field">
+        <label>Max Budget</label>
+        <input id="budget" type="number" placeholder="e.g. 800" min="0" />
+      </div>
+      <div class="field">
+        <label>Need it by</label>
+        <input id="deadline" type="date" />
+      </div>
+      <div class="field full">
+        <label>Preferred Retailers (leave blank = any)</label>
+        <div class="pills" id="retailerPills">
+          <button class="pill" data-r="Amazon">Amazon</button>
+          <button class="pill" data-r="Best Buy">Best Buy</button>
+          <button class="pill" data-r="Walmart">Walmart</button>
+          <button class="pill" data-r="Target">Target</button>
+          <button class="pill" data-r="Costco">Costco</button>
+          <button class="pill" data-r="B&H">B&amp;H Photo</button>
+          <button class="pill" data-r="Newegg">Newegg</button>
+        </div>
+      </div>
+      <div class="field full">
+        <label>Discount Methods to Stack</label>
+        <div class="pills" id="discountPills">
+          <button class="pill active" data-d="sale">Sale Prices</button>
+          <button class="pill active" data-d="coupon">Coupons</button>
+          <button class="pill active" data-d="cashback">Cashback Sites</button>
+          <button class="pill active" data-d="rewards">Store Rewards</button>
+          <button class="pill active" data-d="card">Credit Card Offers</button>
+          <button class="pill" data-d="priceMatch">Price Match</button>
+        </div>
+      </div>
+      <div class="field full">
+        <button class="search-btn" onclick="runSearch()">🔍 Find Best Deal</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="loader">
+    <div class="spinner"></div>
+    <div>Scanning retailers and stacking discounts…</div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results">
+
+    <!-- BEST DEAL HERO -->
+    <div class="best-deal" id="bestDealCard"></div>
+
+    <!-- DISCOUNT BREAKDOWN -->
+    <div class="card">
+      <h2>🧮 How We Stacked the Savings</h2>
+      <div class="breakdown" id="breakdownGrid"></div>
+    </div>
+
+    <!-- RETAILER COMPARISON -->
+    <div class="card">
+      <h2>📊 All Retailers Compared</h2>
+      <div style="overflow-x:auto;">
+        <div style="min-width:640px;">
+          <div class="retailer-row" style="background:transparent;border-color:transparent;">
+            <div class="col-header">Retailer</div>
+            <div class="col-header" style="text-align:right">List Price</div>
+            <div class="col-header" style="text-align:right">Sale / Coupon</div>
+            <div class="col-header" style="text-align:right">Cashback</div>
+            <div class="col-header" style="text-align:right">Rewards</div>
+            <div class="col-header" style="text-align:right">Final Price</div>
+          </div>
+          <div class="retailer-grid" id="retailerGrid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEASONAL INTEL -->
+    <div class="card">
+      <h2>📅 Best Time of Year to Buy</h2>
+      <div class="month-grid" id="monthGrid"></div>
+      <p style="font-size:.8rem;color:var(--muted);margin-top:1rem;" id="seasonTip"></p>
+    </div>
+
+    <!-- PRO TIPS -->
+    <div class="card">
+      <h2>💡 Pro Tips for This Deal</h2>
+      <ul class="tip-list" id="tipList"></ul>
+    </div>
+
+  </div><!-- /results -->
+</div><!-- /wrap -->
+
+<script>
+// ─── DATA ────────────────────────────────────────────────────────
+const RETAILERS = [
+  { name:'Amazon',   cashback:5, rewards:2, priceMatch:false },
+  { name:'Best Buy', cashback:3, rewards:5, priceMatch:true  },
+  { name:'Walmart',  cashback:4, rewards:1, priceMatch:true  },
+  { name:'Target',   cashback:3, rewards:3, priceMatch:true  },
+  { name:'Costco',   cashback:2, rewards:2, priceMatch:false },
+  { name:'B&H',      cashback:6, rewards:0, priceMatch:false },
+  { name:'Newegg',   cashback:7, rewards:1, priceMatch:false },
+];
+
+const SEASONAL = {
+  TV:       [1,2,6,7,8,11],  // Jan, Feb, Jun-Aug (Memorial/Labor Day), Nov (BF)
+  laptop:   [7,8,11,12],
+  phone:    [9,10,11],
+  headphones:[11,12,0,1],
+  appliance:[4,5,8,9,11],
+  default:  [11,12,0,1],
+};
+
+const SEASONAL_EVENTS = {
+  0:  { name:"January Clearance",   pct:15 },
+  1:  { name:"Presidents' Day",     pct:20 },
+  4:  { name:"Memorial Day",        pct:20 },
+  7:  { name:"Back to School",      pct:18 },
+  8:  { name:"Labor Day",           pct:22 },
+  9:  { name:"Prime Day / Oct sale",pct:25 },
+  10: { name:"Black Friday",        pct:35 },
+  11: { name:"Cyber Monday",        pct:30 },
+};
+
+// ─── PILLS ───────────────────────────────────────────────────────
+document.querySelectorAll('.pill').forEach(p=>{
+  p.onclick=()=>p.classList.toggle('active');
+});
+
+function activePills(container){
+  return [...container.querySelectorAll('.pill.active')].map(p=>p.dataset.r||p.dataset.d);
+}
+
+// ─── MAIN SEARCH ─────────────────────────────────────────────────
+function runSearch(){
+  const product  = document.getElementById('product').value.trim();
+  if(!product){ alert('Enter a product first!'); return; }
+  const budget   = parseFloat(document.getElementById('budget').value)||Infinity;
+  const deadline = document.getElementById('deadline').value;
+  const retailers= activePills(document.getElementById('retailerPills'));
+  const discounts= activePills(document.getElementById('discountPills'));
+
+  document.getElementById('loader').style.display='block';
+  document.getElementById('results').style.display='none';
+
+  setTimeout(()=>{
+    document.getElementById('loader').style.display='none';
+    buildResults(product, budget, deadline, retailers, discounts);
+    document.getElementById('results').style.display='block';
+    document.getElementById('results').scrollIntoView({behavior:'smooth'});
+  }, 1600);
+}
+
+// ─── BUILD RESULTS ───────────────────────────────────────────────
+function buildResults(product, budget, deadline, chosenRetailers, discounts){
+  const seed = hashCode(product);
+  const basePrice = fakeBasePrice(product, seed);
+  const category  = detectCategory(product);
+
+  // Filter retailers
+  let pool = chosenRetailers.length>0
+    ? RETAILERS.filter(r=>chosenRetailers.includes(r.name))
+    : RETAILERS;
+  if(pool.length===0) pool = RETAILERS;
+
+  // Build per-retailer data
+  const rows = pool.map((r,i)=>{
+    const varPct   = ((seededRand(seed+i)*12)-4);           // ±12% list variance
+    const listPrice= +(basePrice*(1+varPct/100)).toFixed(2);
+    const salePct  = discounts.includes('sale')   ? seededRand(seed+i+10)*25 : 0;
+    const couponPct= discounts.includes('coupon') ? seededRand(seed+i+20)*12 : 0;
+    const cb       = discounts.includes('cashback')? r.cashback : 0;
+    const rwd      = discounts.includes('rewards') ? r.rewards  : 0;
+    const card     = discounts.includes('card')    ? seededRand(seed+i+30)*5 : 0;
+    const pmMatch  = discounts.includes('priceMatch')&&r.priceMatch ? seededRand(seed+i+40)*8 : 0;
+
+    const afterSale   = listPrice * (1-(salePct+couponPct)/100);
+    const afterCash   = afterSale  * (1-cb/100);
+    const afterRwd    = afterCash  * (1-rwd/100);
+    const afterCard   = afterRwd   * (1-card/100);
+    const finalPrice  = +(afterCard * (1-pmMatch/100)).toFixed(2);
+    const totalSaved  = +(listPrice - finalPrice).toFixed(2);
+    const savePct     = +((totalSaved/listPrice)*100).toFixed(1);
+
+    return {
+      name:r.name,
+      list:listPrice,
+      salePct:+(salePct+couponPct).toFixed(1),
+      cb,rwd,card,pmMatch,
+      final:finalPrice,
+      saved:totalSaved,
+      savePct,
+      withinBudget: finalPrice<=budget
+    };
+  });
+
+  rows.sort((a,b)=>a.final-b.final);
+
+  // ── BEST DEAL CARD ──
+  const best = rows[0];
+  const nowMonth = new Date().getMonth();
+  const hotMonths = SEASONAL[category]||SEASONAL.default;
+  const isHotNow  = hotMonths.includes(nowMonth);
+  const event     = SEASONAL_EVENTS[nowMonth];
+
+  document.getElementById('bestDealCard').innerHTML=`
+    <div class="retailer" style="color:var(--muted);margin-bottom:.3rem">${best.name}</div>
+    <div class="price">$${best.final}</div>
+    <div style="margin:.4rem 0;color:var(--muted)">
+      List price: <span class="strike">$${best.list}</span>
+    </div>
+    <span class="savings-pill">You save $${best.saved} (${best.savePct}% off)</span>
+    ${isHotNow&&event?`<div class="season-flag" style="display:inline-flex;margin-top:.75rem;">🔥 ${event.name} — good time to buy!</div>`:''}
+    <div style="margin-top:1rem;font-size:.9rem;color:var(--muted)">
+      Stacked: ${buildStackSummary(best,discounts)}
+    </div>
+  `;
+
+  // ── BREAKDOWN GRID ──
+  const bk=[];
+  if(best.salePct>0)   bk.push({icon:'🏷️',label:'Sale / Coupon', val:`-${best.salePct}%`});
+  if(best.cb>0)        bk.push({icon:'💸',label:'Cashback Site',  val:`-${best.cb}%`});
+  if(best.rwd>0)       bk.push({icon:'⭐',label:'Store Rewards',  val:`-${best.rwd}%`});
+  if(best.card>0)      bk.push({icon:'💳',label:'Credit Card',    val:`-${best.card.toFixed(1)}%`});
+  if(best.pmMatch>0)   bk.push({icon:'🤝',label:'Price Match',    val:`-${best.pmMatch.toFixed(1)}%`});
+  if(bk.length===0)    bk.push({icon:'✅',label:'Best Available', val:'Live price'});
+  document.getElementById('breakdownGrid').innerHTML=
+    bk.map(b=>`<div class="breakdown-item"><div class="icon">${b.icon}</div><div class="label">${b.label}</div><div class="val">${b.val}</div></div>`).join('');
+
+  // ── RETAILER TABLE ──
+  document.getElementById('retailerGrid').innerHTML=
+    rows.map((r,i)=>`
+      <div class="retailer-row${i===0?' winner':''}">
+        <div class="retailer-name">
+          ${i===0?'🥇 ':''}${r.name}
+          ${!r.withinBudget?'<span class="badge badge-blue" style="margin-left:.4rem">Over budget</span>':''}
+        </div>
+        <div class="col"><span class="strike">$${r.list}</span></div>
+        <div class="col">${r.salePct>0?`<span class="badge badge-green">-${r.salePct}%</span>`:'—'}</div>
+        <div class="col">${r.cb>0?`-${r.cb}%`:'—'}</div>
+        <div class="col">${r.rwd>0?`-${r.rwd}%`:'—'}</div>
+        <div class="col final">$${r.final}</div>
+      </div>`).join('');
+
+  // ── SEASONAL MONTHS ──
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('monthGrid').innerHTML=months.map((m,i)=>{
+    const hot  = hotMonths.includes(i);
+    const ev   = SEASONAL_EVENTS[i];
+    const cls  = ev?'hot':hot?'warm':'cold';
+    const score= ev?'🔥':hot?'👍':'😐';
+    return `<div class="month-block ${cls}">
+      <div class="m">${m}</div>
+      <div class="score">${score}</div>
+      ${ev?`<div style="font-size:.65rem;margin-top:.25rem;color:var(--green)">${ev.name}</div>`:''}
+    </div>`;
+  }).join('');
+  document.getElementById('seasonTip').textContent=
+    isHotNow
+      ? `Now is a GOOD time to buy. ${event?event.name+' deals are typically '+event.pct+'% off.':''}`
+      : `Prices for ${detectLabel(product)} tend to drop most around ${hotMonths.map(i=>months[i]).join(', ')}. If you can wait, you may save more.`;
+
+  // ── PRO TIPS ──
+  const tips=[];
+  tips.push(`Use <strong>Rakuten, TopCashBack, or Capital One Shopping</strong> before checking out at ${best.name} to layer cashback on top of the sale price.`);
+  if(discounts.includes('card'))  tips.push(`Cards like Chase Freedom, Citi Custom Cash, or AmEx Offers often add 3–6% back on electronics — stack on top of cashback.`);
+  if(discounts.includes('priceMatch')) tips.push(`${best.name !== 'Best Buy' ? 'Best Buy' : 'Walmart'} price matches — screenshot the ${best.name} price and bring it in (or use their chat).`);
+  tips.push(`Set a price alert on <strong>CamelCamelCamel</strong> (Amazon) or <strong>Honey</strong> to get notified if ${product} drops further.`);
+  if(deadline) tips.push(`You have until <strong>${deadline}</strong>. Check back Thursday–Saturday — that's when most weekly sales go live.`);
+  tips.push(`Costco and Sam's Club often run unadvertised member deals on electronics — worth checking before you click buy.`);
+  tips.push(`Buying open-box from Best Buy or refurbished from manufacturer can save an additional 15–30% with full warranty.`);
+
+  document.getElementById('tipList').innerHTML=tips.map(t=>`<li>→ ${t}</li>`).join('');
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────────
+function hashCode(s){ let h=0; for(let i=0;i<s.length;i++) h=(Math.imul(31,h)+s.charCodeAt(i))|0; return Math.abs(h); }
+function seededRand(seed){ let x=Math.sin(seed+1)*10000; return x-Math.floor(x); }
+
+function fakeBasePrice(product, seed){
+  const p=product.toLowerCase();
+  if(p.includes('tv')||p.includes('television')) return 350+seededRand(seed)*900;
+  if(p.includes('laptop')||p.includes('macbook'))return 600+seededRand(seed)*1400;
+  if(p.includes('phone')||p.includes('iphone'))  return 400+seededRand(seed)*800;
+  if(p.includes('airpod')||p.includes('headphone')||p.includes('earbuds'))return 80+seededRand(seed)*250;
+  if(p.includes('tablet')||p.includes('ipad'))   return 250+seededRand(seed)*700;
+  if(p.includes('camera'))                        return 300+seededRand(seed)*1200;
+  if(p.includes('watch'))                         return 150+seededRand(seed)*500;
+  if(p.includes('shoe')||p.includes('sneaker'))  return 60+seededRand(seed)*200;
+  if(p.includes('vacuum'))                        return 100+seededRand(seed)*400;
+  return 50+seededRand(seed)*500;
+}
+
+function detectCategory(product){
+  const p=product.toLowerCase();
+  if(p.includes('tv')||p.includes('television')) return 'TV';
+  if(p.includes('laptop')||p.includes('macbook'))return 'laptop';
+  if(p.includes('phone')||p.includes('iphone'))  return 'phone';
+  if(p.includes('airpod')||p.includes('headphone')||p.includes('earbuds'))return 'headphones';
+  if(p.includes('fridge')||p.includes('washer')||p.includes('dryer'))return 'appliance';
+  return 'default';
+}
+
+function detectLabel(product){
+  const c=detectCategory(product);
+  return {TV:'TVs',laptop:'laptops',phone:'phones',headphones:'headphones',appliance:'appliances',default:'this type of product'}[c];
+}
+
+function buildStackSummary(r, discounts){
+  const parts=[];
+  if(r.salePct>0&&discounts.includes('sale'))    parts.push(`${r.salePct}% sale/coupon`);
+  if(r.cb>0&&discounts.includes('cashback'))     parts.push(`${r.cb}% cashback`);
+  if(r.rwd>0&&discounts.includes('rewards'))     parts.push(`${r.rwd}% rewards`);
+  if(r.card>0&&discounts.includes('card'))       parts.push(`${r.card.toFixed(1)}% card offer`);
+  if(r.pmMatch>0&&discounts.includes('priceMatch')) parts.push(`${r.pmMatch.toFixed(1)}% price match`);
+  return parts.length ? parts.join(' + ') : 'current best price';
+}
+</script>
+</body>
+</html>
