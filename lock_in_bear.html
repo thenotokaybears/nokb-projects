@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔒 LOCK IN: Bear Mode 🐻</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', monospace;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline {
+            font-size: 0.95rem;
+            color: #b0b0b0;
+            font-style: italic;
+        }
+
+        /* CLOCK + BEAR MOOD */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            background: rgba(255, 215, 0, 0.05);
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .clock {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffd700;
+            font-family: 'Courier New', monospace;
+        }
+
+        .bear-mood {
+            font-size: 3rem;
+            animation: breathe 2s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .progress-section {
+            margin-bottom: 2rem;
+        }
+
+        .progress-label {
+            color: #ffd700;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700 0%, #ffed4e 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0a0e27;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        /* SCHEDULE */
+        .schedule {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .schedule h2 {
+            color: #ffd700;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .time-block {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 215, 0, 0.05);
+            border-left: 4px solid rgba(255, 215, 0, 0.3);
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .time-block:hover {
+            border-left-color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .time-block input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #ffd700;
+        }
+
+        .time-block.completed {
+            opacity: 0.6;
+            border-left-color: #6b9d00;
+        }
+
+        .time-block.completed .task-text {
+            text-decoration: line-through;
+        }
+
+        .time {
+            min-width: 80px;
+            font-weight: bold;
+            color: #ffd700;
+            font-family: 'Courier New', monospace;
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-text {
+            color: #e0e0e0;
+            font-weight: 500;
+        }
+
+        .task-emoji {
+            font-size: 1.5rem;
+        }
+
+        .remove-btn {
+            background: rgba(255, 100, 100, 0.2);
+            border: 1px solid rgba(255, 100, 100, 0.5);
+            color: #ff6464;
+            padding: 0.4rem 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background: rgba(255, 100, 100, 0.4);
+        }
+
+        /* ADD BLOCK FORM */
+        .add-block-form {
+            background: rgba(255, 215, 0, 0.05);
+            border: 2px dashed rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr 100px 100px;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-input {
+            padding: 0.8rem;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+
+        .form-input::placeholder {
+            color: #666;
+        }
+
+        .form-button {
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #0a0e27;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        /* LOCK IN BUTTON */
+        .lock-in-btn {
+            width: 100%;
+            padding: 2rem;
+            background: linear-gradient(135deg, #ff6464 0%, #ff4444 100%);
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 8px 20px rgba(255, 68, 68, 0.4);
+        }
+
+        .lock-in-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 68, 68, 0.6);
+        }
+
+        /* LOCK IN OVERLAY */
+        .lock-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            text-align: center;
+        }
+
+        .lock-overlay.active {
+            display: flex;
+        }
+
+        .lock-overlay h1 {
+            font-size: 5rem;
+            color: #ffd700;
+            text-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+            margin-bottom: 2rem;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .lock-overlay .bear-icon {
+            font-size: 8rem;
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .lock-overlay p {
+            font-size: 2rem;
+            color: #e0e0e0;
+            margin-bottom: 3rem;
+            max-width: 800px;
+        }
+
+        .unlock-btn {
+            padding: 1.5rem 3rem;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #0a0e27;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .unlock-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* TICKER */
+        .ticker {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 215, 0, 0.1);
+            border-top: 2px solid rgba(255, 215, 0, 0.3);
+            padding: 0.8rem;
+            overflow: hidden;
+            z-index: 100;
+        }
+
+        .ticker-text {
+            display: inline-block;
+            color: #ffd700;
+            font-weight: bold;
+            animation: scroll 20s linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes scroll {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
+
+        /* WISDOM */
+        .wisdom {
+            background: rgba(255, 215, 0, 0.05);
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 8rem;
+            font-style: italic;
+            color: #b0b0b0;
+        }
+
+        .wisdom::before {
+            content: '"';
+            font-size: 3rem;
+            color: #ffd700;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .lock-overlay h1 {
+                font-size: 3rem;
+            }
+
+            .lock-overlay .bear-icon {
+                font-size: 5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>🔒 LOCK IN: Bear Mode 🐻</h1>
+            <p class="tagline">the bear is watching. no tiktok. no vibes. only productivity.</p>
+        </div>
+
+        <!-- STATUS BAR -->
+        <div class="status-bar">
+            <div class="clock" id="clock">00:00</div>
+            <div class="bear-mood" id="bearMood">😤</div>
+        </div>
+
+        <!-- PROGRESS -->
+        <div class="progress-section">
+            <div class="progress-label">
+                <span>Lock-In Progress</span>
+                <span id="progressText">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <!-- WISDOM -->
+        <div class="wisdom" id="wisdom">
+            the floor price of your productivity is zero if you don't lock in rn
+        </div>
+
+        <!-- LOCK IN BUTTON -->
+        <button class="lock-in-btn" id="lockInBtn">🔒 LOCK IN NOW 🔒</button>
+
+        <!-- SCHEDULE -->
+        <div class="schedule">
+            <h2>⏰ Today's Schedule</h2>
+            <div id="scheduleContainer"></div>
+        </div>
+
+        <!-- ADD BLOCK FORM -->
+        <div class="add-block-form">
+            <h3 style="color: #ffd700; margin-bottom: 1rem;">➕ Add Time Block</h3>
+            <div class="form-row">
+                <input type="time" id="blockTime" class="form-input" placeholder="Time">
+                <input type="text" id="blockTask" class="form-input" placeholder="Task name">
+                <input type="text" id="blockEmoji" class="form-input" placeholder="🔥" maxlength="2">
+                <button class="form-button" onclick="addBlock()">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOCK IN OVERLAY -->
+    <div class="lock-overlay" id="lockOverlay">
+        <div class="bear-icon">🐻</div>
+        <h1>THE BEAR IS WATCHING</h1>
+        <p>NO TIKTOK. NO VIBES. ONLY FOCUS.</p>
+        <p id="lockMessage" style="font-size: 1.2rem; color: #ffd700;"></p>
+        <button class="unlock-btn" onclick="unlockIn()">UNLOCK</button>
+    </div>
+
+    <!-- TICKER -->
+    <div class="ticker">
+        <span class="ticker-text">stop scrolling. you know what you need to do. • stop scrolling. you know what you need to do. • stop scrolling. you know what you need to do. •</span>
+    </div>
+
+    <script>
+        let tasks = JSON.parse(localStorage.getItem('bearTasks')) || [
+            { time: '09:00', task: 'morning grind', emoji: '🔥', completed: false },
+            { time: '12:00', task: 'lunch break', emoji: '🍕', completed: false },
+            { time: '15:00', task: 'deep work', emoji: '💪', completed: false },
+            { time: '18:00', task: 'wrap up', emoji: '✅', completed: false }
+        ];
+
+        const wisdomQuotes = [
+            "the floor price of your productivity is zero if you don't lock in rn",
+            "you're not okay if you keep scrolling instead of building",
+            "the bear sees your browser tabs. close them.",
+            "your future self is watching you right now. don't disappoint them.",
+            "this is your time. the market opens for nobody but YOU.",
+            "every minute you waste is money on the floor. literally.",
+            "you didn't hold through 2022 to lose now. same energy applies here.",
+            "the bear doesn't negotiate with distractions",
+            "focus is the only token that never crashes",
+            "netflix will still be there. your goals won't wait"
+        ];
+
+        // Load wisdom on page load
+        function loadWisdom() {
+            const wisdom = wisdomQuotes[Math.floor(Math.random() * wisdomQuotes.length)];
+            document.getElementById('wisdom').textContent = `"${wisdom}"`;
+        }
+
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}`;
+        }
+
+        // Update bear mood based on progress
+        function updateBearMood() {
+            const completed = tasks.filter(t => t.completed).length;
+            const total = tasks.length;
+            const percent = total > 0 ? (completed / total) * 100 : 0;
+
+            let mood = '😤';
+            if (percent >= 75) mood = '👑';
+            else if (percent >= 50) mood = '🔥';
+            else if (percent >= 25) mood = '💪';
+
+            document.getElementById('bearMood').textContent = mood;
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const completed = tasks.filter(t => t.completed).length;
+            const total = tasks.length;
+            const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+            document.getElementById('progressFill').style.width = `${percent}%`;
+            document.getElementById('progressText').textContent = `${percent}%`;
+            document.getElementById('progressFill').textContent = `${completed}/${total}`;
+
+            updateBearMood();
+        }
+
+        // Render schedule
+        function renderSchedule() {
+            const container = document.getElementById('scheduleContainer');
+            container.innerHTML = '';
+
+            tasks.sort((a, b) => a.time.localeCompare(b.time)).forEach((task, idx) => {
+                const block = document.createElement('div');
+                block.className = `time-block ${task.completed ? 'completed' : ''}`;
+                block.innerHTML = `
+                    <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${idx})">
+                    <span class="time">${task.time}</span>
+                    <div class="task-content">
+                        <span class="task-emoji">${task.emoji}</span>
+                        <span class="task-text">${task.task}</span>
+                    </div>
+                    <button class="remove-btn" onclick="removeTask(${idx})">remove</button>
+                `;
+                container.appendChild(block);
+            });
+
+            saveTasks();
+            updateProgress();
+        }
+
+        // Toggle task
+        function toggleTask(idx) {
+            tasks[idx].completed = !tasks[idx].completed;
+            renderSchedule();
+        }
+
+        // Add block
+        function addBlock() {
+            const time = document.getElementById('blockTime').value;
+            const task = document.getElementById('blockTask').value;
+            const emoji = document.getElementById('blockEmoji').value || '🎯';
+
+            if (time && task) {
+                tasks.push({ time, task, emoji, completed: false });
+                document.getElementById('blockTime').value = '';
+                document.getElementById('blockTask').value = '';
+                document.getElementById('blockEmoji').value = '';
+                renderSchedule();
+            }
+        }
+
+        // Remove task
+        function removeTask(idx) {
+            tasks.splice(idx, 1);
+            renderSchedule();
+        }
+
+        // Save tasks
+        function saveTasks() {
+            localStorage.setItem('bearTasks', JSON.stringify(tasks));
+        }
+
+        // Lock in
+        function lockIn() {
+            document.getElementById('lockOverlay').classList.add('active');
+            const completed = tasks.filter(t => t.completed).length;
+            document.getElementById('lockMessage').textContent = `you have ${tasks.length - completed} tasks left. get to work.`;
+        }
+
+        // Unlock
+        function unlockIn() {
+            document.getElementById('lockOverlay').classList.remove('active');
+        }
+
+        // Init
+        window.addEventListener('DOMContentLoaded', () => {
+            loadWisdom();
+            updateClock();
+            renderSchedule();
+            setInterval(updateClock, 1000);
+        });
+
+        document.getElementById('lockInBtn').addEventListener('click', lockIn);
+    </script>
+</body>
+</html>

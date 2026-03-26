@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOKB — Ecosystem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Grain overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='2' /%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Grid background */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 215, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 215, 0, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* NAV */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 3rem;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffd700;
+            letter-spacing: 2px;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .wallet-btn {
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #0a0a0a;
+            border: none;
+            border-radius: 4px;
+            font-family: 'DM Mono', monospace;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .wallet-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .wallet-btn.connected {
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid #ffd700;
+            color: #ffd700;
+        }
+
+        /* HERO */
+        .hero {
+            padding: 6rem 3rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #b0b0b0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* VERIFICATION SECTION */
+        .verification {
+            padding: 4rem 3rem;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .verification h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .verification-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .verification-form input {
+            flex: 1;
+            padding: 1rem;
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: #e0e0e0;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.9rem;
+            border-radius: 4px;
+        }
+
+        .verification-form input::placeholder {
+            color: #666;
+        }
+
+        .verify-btn {
+            padding: 1rem 2rem;
+            background: #ffd700;
+            color: #0a0a0a;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
+            font-family: 'DM Mono', monospace;
+            transition: all 0.3s ease;
+        }
+
+        .verify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .verification-result {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 4px;
+            display: none;
+        }
+
+        .verification-result.show {
+            display: block;
+        }
+
+        .verified {
+            color: #6b9d00;
+        }
+
+        .not-verified {
+            color: #ff6464;
+        }
+
+        /* TRAIT EXPLORER */
+        .trait-explorer {
+            padding: 4rem 3rem;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .trait-explorer h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.5rem;
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: #e0e0e0;
+            cursor: pointer;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #ffd700;
+            color: #0a0a0a;
+            border-color: #ffd700;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .bear-card {
+            background: rgba(255, 215, 0, 0.02);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .bear-card:hover {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.08);
+            transform: translateY(-5px);
+        }
+
+        .bear-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+        }
+
+        .bear-info {
+            padding: 1.5rem;
+        }
+
+        .bear-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+        }
+
+        .bear-traits {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 10, 0.95);
+            padding: 1.5rem;
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .bear-card:hover .bear-traits {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .rarity-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid #ffd700;
+            color: #ffd700;
+            font-size: 0.8rem;
+            font-family: 'DM Mono', monospace;
+            border-radius: 3px;
+            margin-top: 0.5rem;
+        }
+
+        /* ROADMAP */
+        .roadmap {
+            padding: 4rem 3rem;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .roadmap h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ffd700 0%, #ffd700 50%, rgba(255, 215, 0, 0.2) 50%, rgba(255, 215, 0, 0.2) 100%);
+        }
+
+        .phases {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+
+        .phase {
+            text-align: center;
+            flex: 1;
+            padding: 0 1rem;
+            position: relative;
+        }
+
+        .phase-dot {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .phase.active .phase-dot {
+            background: rgba(255, 215, 0, 0.3);
+            border-color: #ffd700;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .phase-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #e0e0e0;
+            margin-bottom: 0.5rem;
+        }
+
+        .phase-desc {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        /* MERCH STORE */
+        .merch {
+            padding: 4rem 3rem;
+        }
+
+        .merch h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .merch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .merch-item {
+            background: rgba(255, 215, 0, 0.02);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .merch-item:hover {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.08);
+            transform: translateY(-5px);
+        }
+
+        .merch-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .merch-info {
+            padding: 1.5rem;
+        }
+
+        .merch-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+        }
+
+        .merch-price {
+            font-family: 'DM Mono', monospace;
+            color: #b0b0b0;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .holder-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: rgba(107, 157, 0, 0.2);
+            border: 1px solid #6b9d00;
+            color: #6b9d00;
+            font-size: 0.8rem;
+            font-family: 'DM Mono', monospace;
+            border-radius: 3px;
+        }
+
+        .purchase-btn {
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 1rem;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid #ffd700;
+            color: #ffd700;
+            cursor: pointer;
+            font-family: 'DM Mono', monospace;
+            font-weight: 600;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .purchase-btn:hover {
+            background: #ffd700;
+            color: #0a0a0a;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1a1a1a;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 4px;
+            padding: 3rem;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: #ffd700;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 1rem;
+        }
+
+        .modal-desc {
+            color: #b0b0b0;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .modal-price {
+            font-family: 'DM Mono', monospace;
+            font-size: 1.3rem;
+            color: #ffd700;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #0a0a0a;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+
+            .verification-form {
+                flex-direction: column;
+            }
+
+            .phases {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .timeline::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <!-- NAV -->
+        <nav>
+            <div class="logo">◆ NOKB</div>
+            <div class="nav-right">
+                <button class="wallet-btn" id="walletBtn">Connect Wallet</button>
+            </div>
+        </nav>
+
+        <!-- HERO -->
+        <section class="hero">
+            <h1>The Not Okay Bears</h1>
+            <p>Premium NFT ecosystem with utilities, verification, and exclusive merch</p>
+        </section>
+
+        <!-- VERIFICATION -->
+        <section class="verification">
+            <h2>Holder Verification</h2>
+            <div class="verification-form">
+                <input type="text" id="addressInput" placeholder="Enter wallet address (0x...)" />
+                <button class="verify-btn" onclick="verifyHolder()">Verify</button>
+            </div>
+            <div class="verification-result" id="verificationResult">
+                <!-- Result will be populated here -->
+            </div>
+        </section>
+
+        <!-- TRAIT EXPLORER -->
+        <section class="trait-explorer">
+            <h2>Trait Explorer</h2>
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterRarity('all')">All</button>
+                <button class="filter-btn" onclick="filterRarity('legendary')">Legendary</button>
+                <button class="filter-btn" onclick="filterRarity('rare')">Rare</button>
+                <button class="filter-btn" onclick="filterRarity('uncommon')">Uncommon</button>
+                <button class="filter-btn" onclick="filterRarity('common')">Common</button>
+            </div>
+            <div class="gallery" id="gallery">
+                <!-- Bears will be populated here -->
+            </div>
+        </section>
+
+        <!-- ROADMAP -->
+        <section class="roadmap">
+            <h2>Roadmap</h2>
+            <div class="timeline">
+                <div class="phases">
+                    <div class="phase active" id="phase0">
+                        <div class="phase-dot">🐻</div>
+                        <div class="phase-title">Community</div>
+                        <div class="phase-desc">Build & organize</div>
+                    </div>
+                    <div class="phase" id="phase1">
+                        <div class="phase-dot">📱</div>
+                        <div class="phase-title">Mobile App</div>
+                        <div class="phase-desc">Companion app</div>
+                    </div>
+                    <div class="phase" id="phase2">
+                        <div class="phase-dot">🎮</div>
+                        <div class="phase-title">Gaming</div>
+                        <div class="phase-desc">Play-to-earn</div>
+                    </div>
+                    <div class="phase" id="phase3">
+                        <div class="phase-dot">🌍</div>
+                        <div class="phase-title">Metaverse</div>
+                        <div class="phase-desc">Virtual world</div>
+                    </div>
+                    <div class="phase" id="phase4">
+                        <div class="phase-dot">👑</div>
+                        <div class="phase-title">Endgame</div>
+                        <div class="phase-desc">Full ecosystem</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MERCH STORE -->
+        <section class="merch">
+            <h2>Exclusive Merch</h2>
+            <div class="merch-grid" id="merchGrid">
+                <!-- Merch items will be populated here -->
+            </div>
+        </section>
+
+        <!-- MODAL -->
+        <div class="modal" id="purchaseModal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeModal()">✕</button>
+                <div class="modal-title" id="modalTitle">Product Name</div>
+                <div class="modal-desc" id="modalDesc">Product description goes here</div>
+                <div class="modal-price" id="modalPrice">$49.99</div>
+                <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // BEAR DATA
+        const bears = [
+            { id: 1, name: 'Bear #001', rarity: 'legendary', emoji: '🐻', traits: ['Crown', 'Gold Eyes', 'Chain'] },
+            { id: 2, name: 'Bear #002', rarity: 'rare', emoji: '🐻', traits: ['Crown', 'Blue Eyes'] },
+            { id: 3, name: 'Bear #003', rarity: 'uncommon', emoji: '🐻', traits: ['Sunglasses'] },
+            { id: 4, name: 'Bear #004', rarity: 'common', emoji: '🐻', traits: ['Smile'] },
+            { id: 5, name: 'Bear #005', rarity: 'legendary', emoji: '🐻', traits: ['Throne', 'Crown', 'Scepter'] },
+            { id: 6, name: 'Bear #006', rarity: 'rare', emoji: '🐻', traits: ['Fire Aura'] },
+            { id: 7, name: 'Bear #007', rarity: 'uncommon', emoji: '🐻', traits: ['Hat'] },
+            { id: 8, name: 'Bear #008', rarity: 'common', emoji: '🐻', traits: ['Neutral'] },
+            { id: 9, name: 'Bear #009', rarity: 'rare', emoji: '🐻', traits: ['Diamond Eyes', 'Crown'] },
+            { id: 10, name: 'Bear #010', rarity: 'uncommon', emoji: '🐻', traits: ['Mask'] },
+            { id: 11, name: 'Bear #011', rarity: 'legendary', emoji: '🐻', traits: ['Wings', 'Halo', 'Crown'] },
+            { id: 12, name: 'Bear #012', rarity: 'common', emoji: '🐻', traits: ['Simple'] }
+        ];
+
+        const merch = [
+            { id: 1, name: 'Bear T-Shirt', price: '$39.99', emoji: '👕', holderOnly: true },
+            { id: 2, name: 'Crown Cap', price: '$29.99', emoji: '🧢', holderOnly: true },
+            { id: 3, name: 'Hoodie', price: '$79.99', emoji: '🧥', holderOnly: true },
+            { id: 4, name: 'Sticker Pack', price: '$9.99', emoji: '🎨', holderOnly: false },
+            { id: 5, name: 'Enamel Pin', price: '$14.99', emoji: '📌', holderOnly: false },
+            { id: 6, name: 'Limited Poster', price: '$24.99', emoji: '🖼️', holderOnly: true }
+        ];
+
+        let currentRarityFilter = 'all';
+        let walletConnected = false;
+
+        // WALLET CONNECT
+        document.getElementById('walletBtn').addEventListener('click', () => {
+            walletConnected = !walletConnected;
+            const btn = document.getElementById('walletBtn');
+            if (walletConnected) {
+                btn.textContent = '0x1234...5678';
+                btn.classList.add('connected');
+                localStorage.setItem('walletConnected', 'true');
+            } else {
+                btn.textContent = 'Connect Wallet';
+                btn.classList.remove('connected');
+                localStorage.removeItem('walletConnected');
+            }
+        });
+
+        // Load wallet state
+        if (localStorage.getItem('walletConnected')) {
+            document.getElementById('walletBtn').click();
+        }
+
+        // VERIFICATION
+        function verifyHolder() {
+            const address = document.getElementById('addressInput').value;
+            const result = document.getElementById('verificationResult');
+            
+            const isValid = address.startsWith('0x1') || address.startsWith('0x2') || address.includes('bear');
+            
+            if (isValid) {
+                result.innerHTML = `
+                    <div class="verified">
+                        <strong>✓ Verified Holder</strong><br>
+                        Tier: <strong>Gold</strong><br>
+                        Perks: Early access, exclusive merch discount, governance rights
+                    </div>
+                `;
+            } else {
+                result.innerHTML = `<div class="not-verified"><strong>✗ No NOKB Found</strong><br>This address does not hold any NOKB tokens</div>`;
+            }
+            
+            result.classList.add('show');
+        }
+
+        // GALLERY
+        function renderGallery() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+            
+            const filtered = currentRarityFilter === 'all' 
+                ? bears 
+                : bears.filter(b => b.rarity === currentRarityFilter);
+            
+            filtered.forEach(bear => {
+                const card = document.createElement('div');
+                card.className = 'bear-card';
+                card.innerHTML = `
+                    <div class="bear-image">${bear.emoji}</div>
+                    <div class="bear-info">
+                        <div class="bear-name">${bear.name}</div>
+                        <div class="bear-traits">
+                            <div><strong>Traits:</strong></div>
+                            ${bear.traits.map(t => `<div>• ${t}</div>`).join('')}
+                            <div class="rarity-badge">${bear.rarity.toUpperCase()}</div>
+                        </div>
+                    </div>
+                `;
+                gallery.appendChild(card);
+            });
+        }
+
+        function filterRarity(rarity) {
+            currentRarityFilter = rarity;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderGallery();
+        }
+
+        // MERCH
+        function renderMerch() {
+            const grid = document.getElementById('merchGrid');
+            grid.innerHTML = '';
+            
+            merch.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'merch-item';
+                div.innerHTML = `
+                    <div class="merch-image">${item.emoji}</div>
+                    <div class="merch-info">
+                        <div class="merch-name">${item.name}</div>
+                        <div class="merch-price">${item.price}</div>
+                        ${item.holderOnly ? '<div class="holder-badge">HOLDER ONLY</div>' : ''}
+                        <button class="purchase-btn" onclick="openModal('${item.name}', '${item.price}')">Buy Now</button>
+                    </div>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        // MODAL
+        function openModal(name, price) {
+            document.getElementById('modalTitle').textContent = name;
+            document.getElementById('modalPrice').textContent = price;
+            document.getElementById('purchaseModal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('purchaseModal').classList.remove('show');
+        }
+
+        function checkout() {
+            alert('Checkout initiated! This is a demo.');
+            closeModal();
+        }
+
+        // INIT
+        renderGallery();
+        renderMerch();
+    </script>
+</body>
+</html>

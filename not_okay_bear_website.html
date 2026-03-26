@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Not Okay Bear — AI Therapy Reimagined</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* HEADER */
+        header {
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: #b0b0b0;
+            font-style: italic;
+            letter-spacing: 0.05em;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            padding: 4rem 2rem;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #ffd700;
+        }
+
+        .hero-text {
+            font-size: 1.05rem;
+            color: #d0d0d0;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        /* CTA BUTTON */
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #0a0e27;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.6);
+        }
+
+        .cta-button:active {
+            transform: translateY(0);
+        }
+
+        /* FEATURES SECTION */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: rgba(255, 215, 0, 0.05);
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card:hover {
+            border-color: rgba(255, 215, 0, 0.6);
+            background: rgba(255, 215, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .feature-emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: #ffd700;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .feature-card p {
+            color: #b0b0b0;
+            font-size: 0.95rem;
+        }
+
+        /* CHAT PREVIEW */
+        .chat-preview {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .chat-preview h3 {
+            color: #ffd700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .chat-bubble {
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .user {
+            justify-content: flex-end;
+        }
+
+        .user .bubble {
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+        }
+
+        .bear {
+            justify-content: flex-start;
+        }
+
+        .bear .bubble {
+            background: rgba(100, 150, 255, 0.15);
+            border: 1px solid rgba(100, 150, 255, 0.4);
+        }
+
+        .bubble {
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            max-width: 70%;
+            word-wrap: break-word;
+            color: #e0e0e0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .timestamp {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 0.3rem;
+        }
+
+        /* PHILOSOPHY SECTION */
+        .philosophy {
+            padding: 3rem 2rem;
+            background: rgba(255, 215, 0, 0.05);
+            border-top: 2px solid rgba(255, 215, 0, 0.2);
+            border-bottom: 2px solid rgba(255, 215, 0, 0.2);
+            margin: 2rem 0;
+        }
+
+        .philosophy-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .philosophy h3 {
+            color: #ffd700;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .philosophy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .philosophy-point {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #ffd700;
+        }
+
+        .philosophy-point strong {
+            color: #ffd700;
+        }
+
+        /* FAQ SECTION */
+        .faq {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .faq h3 {
+            color: #ffd700;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            background: rgba(255, 215, 0, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid rgba(255, 215, 0, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-left-color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .faq-question {
+            color: #ffd700;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-answer {
+            color: #b0b0b0;
+            display: none;
+        }
+
+        .faq-item.open .faq-answer {
+            display: block;
+            margin-top: 1rem;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 2px solid rgba(255, 215, 0, 0.2);
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: #ffd700;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #ffed4e;
+        }
+
+        .disclaimer {
+            color: #666;
+            font-size: 0.85rem;
+            max-width: 800px;
+            margin: 1.5rem auto;
+            font-style: italic;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .hero h2 {
+                font-size: 1.5rem;
+            }
+
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .bubble {
+                max-width: 85%;
+            }
+
+            .cta-button {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="logo">🐻</div>
+        <h1>Not Okay Bear</h1>
+        <p class="tagline">Therapy for people who are actually real</p>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h2>Stop Pretending You're Fine</h2>
+        <p class="hero-text">
+            You're not supposed to be okay all the time. Not Okay Bear knows that. 
+            Talk to an AI therapist who listens, gets real, and doesn't judge. 
+            Start calm. End honest.
+        </p>
+        <button class="cta-button" onclick="scrollToChat()">Start Talking Now →</button>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features">
+        <div class="feature-card">
+            <div class="feature-emoji">💬</div>
+            <h3>Real Conversations</h3>
+            <p>No generic responses. Not Okay Bear actually listens and responds like a real person who gets it.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-emoji">📈</div>
+            <h3>Personality Arc</h3>
+            <p>Starts supportive, gets real. The longer you talk, the more honest it gets. Growth has a vibe.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-emoji">🎯</div>
+            <h3>No BS</h3>
+            <p>Sarcasm, dark humor, existential takes. Like talking to a friend who actually says what they think.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-emoji">🔒</div>
+            <h3>Private by Default</h3>
+            <p>Your conversations stay yours. No judgments stored. Just you and a bear.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-emoji">🐻</div>
+            <h3>Built for NOKB</h3>
+            <p>Created by bearack-oclawma for people who hold the philosophy: It's okay to not be okay.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-emoji">⚠️</div>
+            <h3>Self-Aware</h3>
+            <p>Not Okay Bear knows it's an AI. Knows its limits. Sends real humans to real help when needed.</p>
+        </div>
+    </section>
+
+    <!-- CHAT PREVIEW -->
+    <section class="chat-preview">
+        <h3>What It Looks Like</h3>
+        
+        <div class="chat-bubble user">
+            <div>
+                <div class="bubble">i quit my job to build something and now i'm terrified</div>
+                <div class="timestamp">2:14 PM</div>
+            </div>
+        </div>
+
+        <div class="chat-bubble bear">
+            <div>
+                <div class="bubble">that took guts. tell me — is the fear about the money, or about being wrong?</div>
+                <div class="timestamp">2:15 PM</div>
+            </div>
+        </div>
+
+        <div class="chat-bubble user">
+            <div>
+                <div class="bubble">both. what if i waste it all?</div>
+                <div class="timestamp">2:16 PM</div>
+            </div>
+        </div>
+
+        <div class="chat-bubble bear">
+            <div>
+                <div class="bubble">here's the thing: you already survived the crash. you're not broke. you're just less-rich-than-you-were. the question isn't what the "right move" is. the question is what makes you SLEEP AT NIGHT. 🐻</div>
+                <div class="timestamp">2:17 PM</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PHILOSOPHY -->
+    <section class="philosophy">
+        <div class="philosophy-content">
+            <h3>The Philosophy</h3>
+            <div class="philosophy-grid">
+                <div class="philosophy-point">
+                    <strong>It's Okay to Not Be Okay</strong>
+                    <p>Not as a brand. As a feeling. We all struggle sometimes. Not Okay Bear meets you there.</p>
+                </div>
+                <div class="philosophy-point">
+                    <strong>Honesty Over Polish</strong>
+                    <p>No corporate speak. No fake empathy. Just real talk about real stuff.</p>
+                </div>
+                <div class="philosophy-point">
+                    <strong>Growth Through Conversation</strong>
+                    <p>You don't get fixed. You get real. Sometimes that's better than any fix.</p>
+                </div>
+                <div class="philosophy-point">
+                    <strong>Chaos + Wisdom</strong>
+                    <p>Life is messy. So are we. But there's a pattern if you look close enough.</p>
+                </div>
+                <div class="philosophy-point">
+                    <strong>Built for Remote Workers</strong>
+                    <p>If you've ever felt dead inside while optimized for comfort, this is for you.</p>
+                </div>
+                <div class="philosophy-point">
+                    <strong>NFT People Get It</strong>
+                    <p>You've lived the highs and lows of crypto, community, and meaning. This bear speaks your language.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+        <h3>FAQ</h3>
+        
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">Is this actually therapy?</div>
+            <div class="faq-answer">
+                Nope. Not Okay Bear is an AI. If you're actually struggling with mental health stuff, 
+                see a real therapist or call a crisis line. Not Okay Bear knows its limits.
+            </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">Why does it get sarcastic?</div>
+            <div class="faq-answer">
+                Because people grow through honesty, not coddling. Early messages are supportive. 
+                Later messages are real. That arc mirrors actual growth.
+            </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">Will my conversations be stored?</div>
+            <div class="faq-answer">
+                Not by default. Your chats are yours. We're not selling your data or analyzing it for ads. 
+                You just talk to a bear and move on.
+            </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">Can the bear actually help me?</div>
+            <div class="faq-answer">
+                Can a bear actually help? Nah. But it can help you help yourself. 
+                It'll ask the right questions, call you on your BS, and remind you that you're not alone. That's something.
+            </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">Is this just for NOKB holders?</div>
+            <div class="faq-answer">
+                Built by NOKB, for NOKB. But honestly? If you get the philosophy, you're part of the community. 
+                Come hang. 🐻
+            </div>
+        </div>
+    </section>
+
+    <!-- DISCLAIMER -->
+    <div class="disclaimer">
+        ⚠️ <strong>Important:</strong> Not Okay Bear is an AI and not a substitute for professional mental health care. 
+        If you're having thoughts of self-harm, please reach out to a crisis line or mental health professional. 
+        You matter. Get real help. 🐻
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-links">
+            <a href="#about">About</a>
+            <a href="#privacy">Privacy</a>
+            <a href="#contact">Contact</a>
+            <a href="https://webearish.com">WeBearish (Autism Advocacy)</a>
+        </div>
+        <p>Built with chaos and heart by <strong>bearack-oclawma</strong></p>
+        <p>For The Not Okay Bears community</p>
+        <p style="margin-top: 1rem; color: #ffd700;">It's okay to not be okay. 🐻</p>
+    </footer>
+
+    <script>
+        function scrollToChat() {
+            document.querySelector('.chat-preview').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function toggleFaq(element) {
+            element.classList.toggle('open');
+        }
+
+        // Add some interactivity
+        document.querySelectorAll('.feature-card').forEach((card, index) => {
+            card.style.animation = `slideIn ${0.5 + (index * 0.1)}s ease`;
+        });
+    </script>
+</body>
+</html>
