@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Not Okay Bears — We Are Not Okay. And That's Perfect.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #0d0d1a;
+  --bg-card: rgba(255,255,255,0.05);
+  --accent-primary: #7c3aed;
+  --accent-secondary: #06b6d4;
+  --accent-glow: rgba(124,58,237,0.4);
+  --cyan-glow: rgba(6,182,212,0.4);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --border-subtle: rgba(255,255,255,0.08);
+  --border-accent: rgba(124,58,237,0.4);
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);line-height:1.6;overflow-x:hidden}
+
+/* PARTICLES CANVAS */
+#particles{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 3rem;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,15,0.7);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-subtle)}
+.nav-logo{font-family:var(--font-heading);font-size:1.4rem;font-weight:800;background:linear-gradient(135deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.5px}
+.nav-links{display:flex;gap:2rem;align-items:center}
+.nav-links a{color:var(--text-secondary);text-decoration:none;font-size:.9rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--text-primary)}
+.nav-cta{padding:.6rem 1.5rem;background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;border:none;border-radius:var(--radius-sm);font-family:var(--font-heading);font-weight:700;cursor:pointer;font-size:.9rem;transition:all .2s;text-decoration:none}
+.nav-cta:hover{box-shadow:0 0 24px var(--accent-glow),0 0 48px rgba(6,182,212,0.2);transform:translateY(-1px)}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background-image:url('https://v3b.fal.media/files/b/0a93cd19/seTvDZAozPqrRQNPlhK8g.jpg');background-size:cover;background-position:center;z-index:1;opacity:.35}
+.hero-overlay{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(124,58,237,0.25) 0%,rgba(10,10,15,0.9) 70%);z-index:2}
+.hero-content{position:relative;z-index:3;max-width:900px;padding:2rem}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem 1rem;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.4);border-radius:999px;font-size:.8rem;font-weight:600;color:#a78bfa;margin-bottom:1.5rem;letter-spacing:.05em}
+.hero h1{font-family:var(--font-heading);font-size:clamp(3rem,8vw,6.5rem);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:1.5rem}
+.hero h1 .line1{display:block;color:#fff}
+.hero h1 .line2{display:block;background:linear-gradient(135deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:1.15rem;color:var(--text-secondary);max-width:560px;margin:0 auto 2.5rem;line-height:1.7}
+.hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn-primary{padding:.9rem 2.5rem;background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;border:none;border-radius:var(--radius-sm);font-family:var(--font-heading);font-weight:700;cursor:pointer;font-size:1rem;transition:all .25s}
+.btn-primary:hover{box-shadow:0 0 32px var(--accent-glow),0 0 60px rgba(6,182,212,0.15);transform:translateY(-2px)}
+.btn-secondary{padding:.9rem 2.5rem;background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius-sm);font-family:var(--font-heading);font-weight:700;cursor:pointer;font-size:1rem;transition:all .25s}
+.btn-secondary:hover{border-color:rgba(124,58,237,0.6);background:rgba(124,58,237,0.1);transform:translateY(-2px)}
+.hero-stats{display:flex;gap:3rem;justify-content:center;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border-subtle)}
+.stat-num{font-family:var(--font-heading);font-size:2rem;font-weight:800;background:linear-gradient(135deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:.8rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;margin-top:.2rem}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--text-muted);font-size:.75rem;animation:bounce 2s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+/* SECTIONS */
+section{position:relative;z-index:10;padding:6rem 3rem}
+.section-label{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--accent-secondary);margin-bottom:.75rem}
+.section-title{font-family:var(--font-heading);font-size:clamp(2rem,4vw,3.2rem);font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:1rem}
+.section-desc{color:var(--text-secondary);font-size:1.05rem;max-width:560px;line-height:1.7}
+
+/* ABOUT / BEAR FEATURE */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;max-width:1100px;margin:0 auto}
+.about-img{border-radius:var(--radius-lg);overflow:hidden;position:relative}
+.about-img img{width:100%;height:500px;object-fit:cover;display:block}
+.about-img-glow{position:absolute;inset:-2px;border-radius:var(--radius-lg);background:linear-gradient(135deg,rgba(124,58,237,.5),rgba(6,182,212,.5));z-index:-1}
+.about-content{display:flex;flex-direction:column;gap:1.5rem}
+.about-tag{display:inline-block;padding:.35rem .9rem;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.4);border-radius:999px;font-size:.78rem;font-weight:600;color:#a78bfa;letter-spacing:.06em}
+.feature-list{display:flex;flex-direction:column;gap:1rem;margin-top:.5rem}
+.feature-item{display:flex;align-items:flex-start;gap:1rem;padding:1.2rem;background:var(--bg-card);backdrop-filter:blur(12px);border:1px solid var(--border-subtle);border-radius:var(--radius-md);transition:all .25s}
+.feature-item:hover{border-color:rgba(124,58,237,.4);box-shadow:0 0 20px rgba(124,58,237,.15);transform:translateX(4px)}
+.feature-icon{width:40px;height:40px;border-radius:var(--radius-sm);background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(6,182,212,.3));display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.feature-icon svg{width:20px;height:20px;stroke:#a78bfa;fill:none;stroke-width:2;stroke-linecap:round}
+.feature-text h4{font-family:var(--font-heading);font-weight:700;font-size:.95rem;color:var(--text-primary);margin-bottom:.2rem}
+.feature-text p{font-size:.85rem;color:var(--text-secondary)}
+
+/* COMMUNITY SECTION */
+.community-section{background:linear-gradient(180deg,var(--bg-primary) 0%,#0d0820 50%,var(--bg-primary) 100%)}
+.community-inner{max-width:1100px;margin:0 auto}
+.community-header{text-align:center;margin-bottom:4rem}
+.community-img-wrap{position:relative;border-radius:var(--radius-lg);overflow:hidden;margin-bottom:3rem}
+.community-img-wrap img{width:100%;height:400px;object-fit:cover;display:block;opacity:.7}
+.community-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,15,1) 0%,rgba(10,10,15,.3) 60%,transparent 100%)}
+.community-img-text{position:absolute;bottom:2.5rem;left:3rem;right:3rem;z-index:2}
+.community-img-text h3{font-family:var(--font-heading);font-size:2rem;font-weight:800;margin-bottom:.5rem}
+.community-img-text p{color:var(--text-secondary);font-size:1rem}
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.vibe-card{padding:1.8rem;background:var(--bg-card);backdrop-filter:blur(16px);border:1px solid var(--border-subtle);border-radius:var(--radius-md);transition:all .3s;cursor:default}
+.vibe-card:hover{border-color:rgba(124,58,237,.5);box-shadow:0 0 30px rgba(124,58,237,.15),0 20px 40px rgba(0,0,0,.3);transform:translateY(-4px)}
+.vibe-card-icon{width:48px;height:48px;border-radius:var(--radius-sm);margin-bottom:1.2rem;display:flex;align-items:center;justify-content:center}
+.vibe-card-icon svg{width:24px;height:24px;stroke-width:2;stroke-linecap:round;fill:none}
+.ic-purple{background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.3)}
+.ic-purple svg{stroke:#a78bfa}
+.ic-cyan{background:rgba(6,182,212,.2);border:1px solid rgba(6,182,212,.3)}
+.ic-cyan svg{stroke:#67e8f9}
+.ic-pink{background:rgba(236,72,153,.2);border:1px solid rgba(236,72,153,.3)}
+.ic-pink svg{stroke:#f9a8d4}
+.vibe-card h4{font-family:var(--font-heading);font-weight:700;font-size:1.1rem;margin-bottom:.5rem}
+.vibe-card p{font-size:.88rem;color:var(--text-secondary);line-height:1.6}
+
+/* CTA SECTION */
+.cta-section{text-align:center;position:relative;overflow:hidden}
+.cta-bg{position:absolute;inset:0;z-index:0}
+.cta-bg img{width:100%;height:100%;object-fit:cover;opacity:.2}
+.cta-bg-overlay{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(124,58,237,.4) 0%,rgba(10,10,15,.95) 70%)}
+.cta-content{position:relative;z-index:2;max-width:700px;margin:0 auto}
+.cta-content h2{font-family:var(--font-heading);font-size:clamp(2.5rem,5vw,4rem);font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:1.5rem}
+.cta-content p{font-size:1.1rem;color:var(--text-secondary);margin-bottom:2.5rem;line-height:1.7}
+.cta-links{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.cta-link{padding:.8rem 2rem;font-family:var(--font-heading);font-weight:700;font-size:.9rem;border-radius:var(--radius-sm);text-decoration:none;transition:all .25s;display:inline-block}
+.cta-link.primary{background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff}
+.cta-link.primary:hover{box-shadow:0 0 28px var(--accent-glow);transform:translateY(-2px)}
+.cta-link.secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.2)}
+.cta-link.secondary:hover{border-color:rgba(124,58,237,.6);background:rgba(124,58,237,.1)}
+
+/* FOOTER */
+footer{position:relative;z-index:10;padding:3rem;border-top:1px solid var(--border-subtle);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-logo{font-family:var(--font-heading);font-size:1.1rem;font-weight:800;background:linear-gradient(135deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.footer-links{display:flex;gap:1.5rem}
+.footer-links a{color:var(--text-muted);font-size:.85rem;text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--text-secondary)}
+.footer-copy{color:var(--text-muted);font-size:.8rem}
+
+/* FADE IN ANIMATION */
+.fade-in{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{display:none}
+  section{padding:4rem 1.5rem}
+  .about-grid{grid-template-columns:1fr}
+  .cards-grid{grid-template-columns:1fr}
+  .hero-stats{gap:1.5rem}
+  footer{flex-direction:column;text-align:center;padding:2rem 1.5rem}
+  .footer-links{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">NOT OKAY BEARS</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#community">Community</a>
+    <a href="#vibes">Vibes</a>
+    <a href="https://opensea.io" target="_blank" class="nav-cta">Get a Bear</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="6" cy="6" r="6"/></svg>
+      10,000 Bears. Zero Chill.
+    </div>
+    <h1>
+      <span class="line1">We Are Not</span>
+      <span class="line2">Okay Bears</span>
+    </h1>
+    <p class="hero-sub">A bear that's been up for 3 days, owns 47 JPEGs, and is absolutely feral about it. This is our community. Come be chaotic with us.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="window.open('https://opensea.io','_blank')">Get a Bear</button>
+      <button class="btn-secondary" onclick="document.getElementById('community').scrollIntoView({behavior:'smooth'})">Meet the Bears</button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">10K</div><div class="stat-label">Bears</div></div>
+      <div><div class="stat-num">3K+</div><div class="stat-label">Holders</div></div>
+      <div><div class="stat-num">200+</div><div class="stat-label">UFC Nights</div></div>
+      <div><div class="stat-num">∞</div><div class="stat-label">Bad Decisions</div></div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    scroll
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="background:linear-gradient(180deg,var(--bg-primary) 0%,#0a0818 100%)">
+  <div class="about-grid fade-in">
+    <div class="about-img">
+      <img src="https://v3b.fal.media/files/b/0a93cd19/BGFXNw7NWJ0xbeUhTf33J.jpg" alt="NOKB Bear" loading="lazy" width="550" height="500">
+      <div class="about-img-glow"></div>
+    </div>
+    <div class="about-content">
+      <span class="about-tag">EST. NOV 2022</span>
+      <h2 class="section-title">It's okay to not<br>be okay.</h2>
+      <p style="color:var(--text-secondary);font-size:1rem;line-height:1.8">We didn't start this community to be another blue-chip project or a 10x opportunity. We started it because sometimes you just need a room full of people who get it. Bears who held through the winter. Who showed up every weekend. Who stayed real.</p>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="feature-text">
+            <h4>Real Community</h4>
+            <p>IRL meetups in Las Vegas. UFC watch parties every single weekend since November 2022.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="feature-text">
+            <h4>Holder Utilities</h4>
+            <p>Verification, exclusive drops, governance. Your bear isn't just art — it's your key.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="feature-text">
+            <h4>WeBearish</h4>
+            <p>Co-founded by our own Cash. Autism acceptance, real advocacy, real people.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY -->
+<section id="community" class="community-section">
+  <div class="community-inner">
+    <div class="community-header fade-in">
+      <div class="section-label">Community</div>
+      <h2 class="section-title">We show up.</h2>
+      <p class="section-desc" style="margin:0 auto;text-align:center">Every weekend. Every fight card. Every time someone needs to talk. That's what makes this different.</p>
+    </div>
+    <div class="community-img-wrap fade-in">
+      <img src="https://v3b.fal.media/files/b/0a93cd19/Ahey7ISC17o-spahmCIHu.jpg" alt="NOKB Community" loading="lazy" width="1100" height="400">
+      <div class="community-img-overlay"></div>
+      <div class="community-img-text">
+        <h3>The bears that stayed.</h3>
+        <p>Through the crash, the chaos, and everything in between.</p>
+      </div>
+    </div>
+    <div class="cards-grid fade-in" id="vibes">
+      <div class="vibe-card">
+        <div class="vibe-card-icon ic-purple">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h4>UFC Watch Parties</h4>
+        <p>Every. Single. Weekend. Since November 2022. Voice chat pops off at fight time. The founders never miss it.</p>
+      </div>
+      <div class="vibe-card">
+        <div class="vibe-card-icon ic-cyan">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <h4>IRL Meetups</h4>
+        <p>Las Vegas. Real faces, real people, real chaos. NFTs brought us here. The vibe made us stay.</p>
+      </div>
+      <div class="vibe-card">
+        <div class="vibe-card-icon ic-pink">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h4>Real Conversations</h4>
+        <p>This isn't a hype machine. We talk. We're honest. Sometimes we're not okay. That's the whole point.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-bg">
+    <img src="https://v3b.fal.media/files/b/0a93cd19/du8bOWz3JqOtYN_iUcAL2.jpg" alt="" loading="lazy" width="1400" height="600">
+    <div class="cta-bg-overlay"></div>
+  </div>
+  <div class="cta-content fade-in">
+    <h2>Ready to be<br>Not Okay?</h2>
+    <p>10,000 bears. One community. Zero pretending everything is fine. Come find your people.</p>
+    <div class="cta-links">
+      <a href="https://opensea.io" target="_blank" class="cta-link primary">Get a Bear on OpenSea</a>
+      <a href="https://discord.gg/clawd" target="_blank" class="cta-link secondary">Join the Discord</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">NOT OKAY BEARS</div>
+  <div class="footer-links">
+    <a href="https://opensea.io" target="_blank">OpenSea</a>
+    <a href="https://discord.gg/clawd" target="_blank">Discord</a>
+    <a href="https://webearish.com" target="_blank">WeBearish</a>
+    <a href="https://twitter.com" target="_blank">Twitter</a>
+  </div>
+  <div class="footer-copy">© 2026 Not Okay Bears — It's okay to not be okay.</div>
+</footer>
+
+<script>
+// ── PARTICLES ────────────────────────────────────────────────────
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor(){
+    this.x = Math.random()*W;
+    this.y = Math.random()*H;
+    this.vx = (Math.random()-.5)*.4;
+    this.vy = (Math.random()-.5)*.4;
+    this.r = Math.random()*1.5+.5;
+    this.life = Math.random();
+    this.color = Math.random()>.5 ? '124,58,237' : '6,182,212';
+  }
+  update(){
+    this.x+=this.vx; this.y+=this.vy; this.life+=.003;
+    if(this.x<0||this.x>W||this.y<0||this.y>H||this.life>1){
+      this.x=Math.random()*W; this.y=Math.random()*H; this.life=0;
+    }
+  }
+  draw(){
+    const a = Math.sin(this.life*Math.PI)*0.6;
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${this.color},${a})`;
+    ctx.fill();
+  }
+}
+
+for(let i=0;i<120;i++) particles.push(new Particle());
+
+// Draw connection lines between nearby particles
+function drawConnections(){
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      const dx=particles[i].x-particles[j].x;
+      const dy=particles[i].y-particles[j].y;
+      const dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<100){
+        const a=(1-dist/100)*0.12;
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x,particles[i].y);
+        ctx.lineTo(particles[j].x,particles[j].y);
+        ctx.strokeStyle=`rgba(124,58,237,${a})`;
+        ctx.lineWidth=.5;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animate(){
+  ctx.clearRect(0,0,W,H);
+  particles.forEach(p=>{ p.update(); p.draw(); });
+  drawConnections();
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ── FADE IN ON SCROLL ────────────────────────────────────────────
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:.1});
+document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
