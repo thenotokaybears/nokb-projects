@@ -1,653 +1,400 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOKB World - Investment Proposal V2</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f5f5;
-        }
-        .page { page-break-after: always; padding: 60px; min-height: 1100px; background: white; }
-        .header { text-align: center; margin-bottom: 40px; border-bottom: 3px solid #8B4513; padding-bottom: 20px; }
-        .header h1 { font-size: 36px; color: #6B3410; margin-bottom: 10px; }
-        .header p { font-size: 16px; color: #666; font-weight: 500; }
-        .version { font-size: 12px; color: #999; margin-top: 10px; }
-        .section-title { font-size: 24px; color: #8B4513; margin: 30px 0 20px 0; font-weight: 600; border-left: 5px solid #8B4513; padding-left: 15px; }
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 13px; }
-        th { background: #8B4513; color: white; padding: 12px; text-align: left; font-weight: 600; }
-        td { padding: 10px 12px; border-bottom: 1px solid #ddd; }
-        tr:nth-child(even) { background: #f9f9f9; }
-        .highlight { background: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin: 15px 0; border-radius: 3px; }
-        .highlight-red { background: #ffe6e6; padding: 15px; border-left: 4px solid #d32f2f; margin: 15px 0; border-radius: 3px; }
-        .financial-key { font-size: 18px; font-weight: 700; color: #6B3410; }
-        .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 11px; color: #999; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOKB World — Investment Proposal V2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0f;--bg2:#0d0d1a;--card:rgba(255,255,255,0.04);
+  --purple:#7c3aed;--cyan:#06b6d4;--gold:#f59e0b;
+  --glow-p:rgba(124,58,237,0.35);--glow-c:rgba(6,182,212,0.35);
+  --text:#f1f5f9;--muted:#94a3b8;--subtle:#475569;
+  --border:rgba(255,255,255,0.07);--border-a:rgba(124,58,237,0.35);
+  --green:#4ade80;--red:#f87171;
+  --font-h:'Space Grotesk',sans-serif;--font-b:'Inter',sans-serif;--font-m:'DM Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);line-height:1.7;font-size:15px}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 3rem;background:rgba(10,10,15,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-brand{font-family:var(--font-h);font-weight:800;font-size:1.1rem;background:linear-gradient(135deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.3px}
+.nav-tag{font-family:var(--font-m);font-size:.72rem;color:var(--subtle);letter-spacing:.1em}
+
+/* COVER */
+.cover{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;padding:4rem 2rem}
+.cover-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,rgba(124,58,237,.2) 0%,transparent 60%),radial-gradient(ellipse at 70% 60%,rgba(6,182,212,.15) 0%,transparent 60%)}
+.cover-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:60px 60px}
+.cover-inner{position:relative;z-index:2;max-width:800px}
+.cover-eyebrow{display:inline-block;font-family:var(--font-m);font-size:.72rem;letter-spacing:.15em;color:var(--cyan);border:1px solid rgba(6,182,212,.3);padding:.35rem 1rem;border-radius:999px;margin-bottom:1.5rem}
+.cover h1{font-family:var(--font-h);font-size:clamp(3rem,7vw,5.5rem);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:1.2rem}
+.cover h1 span{background:linear-gradient(135deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cover-sub{font-size:1.1rem;color:var(--muted);margin-bottom:2.5rem}
+.kpi-row{display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;padding:2rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.kpi{text-align:center}
+.kpi-val{font-family:var(--font-h);font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1}
+.kpi-label{font-family:var(--font-m);font-size:.7rem;color:var(--subtle);text-transform:uppercase;letter-spacing:.1em;margin-top:.3rem}
+.cover-version{font-family:var(--font-m);font-size:.7rem;color:var(--subtle);margin-top:2rem;letter-spacing:.1em}
+
+/* PAGE SECTIONS */
+.page-section{padding:5rem 3rem;border-bottom:1px solid var(--border);max-width:1100px;margin:0 auto}
+.section-num{font-family:var(--font-m);font-size:.7rem;color:var(--purple);letter-spacing:.15em;margin-bottom:.5rem}
+.section-title{font-family:var(--font-h);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:800;letter-spacing:-0.5px;margin-bottom:.5rem;line-height:1.1}
+.section-desc{color:var(--muted);font-size:.95rem;margin-bottom:2.5rem;max-width:640px}
+
+/* CALLOUT CARDS */
+.callout-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:2rem}
+.callout{padding:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:12px;transition:all .25s}
+.callout:hover{border-color:var(--border-a);box-shadow:0 0 20px var(--glow-p)}
+.callout.highlight{border-color:rgba(124,58,237,.4);background:rgba(124,58,237,.07)}
+.callout.warn{border-color:rgba(245,158,11,.35);background:rgba(245,158,11,.05)}
+.callout.success{border-color:rgba(74,222,128,.3);background:rgba(74,222,128,.05)}
+.callout-label{font-family:var(--font-m);font-size:.68rem;color:var(--subtle);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.5rem}
+.callout-val{font-family:var(--font-h);font-size:1.6rem;font-weight:800;color:var(--text);line-height:1.1;margin-bottom:.3rem}
+.callout-val.purple{background:linear-gradient(135deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.callout-note{font-size:.82rem;color:var(--muted)}
+
+/* TABLES */
+.table-wrap{overflow-x:auto;margin:1.5rem 0;border:1px solid var(--border);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+thead tr{background:rgba(124,58,237,.12)}
+thead th{padding:1rem 1.2rem;text-align:left;font-family:var(--font-h);font-weight:700;font-size:.8rem;letter-spacing:.05em;color:var(--text);border-bottom:1px solid var(--border)}
+tbody tr{border-bottom:1px solid var(--border);transition:background .2s}
+tbody tr:hover{background:rgba(255,255,255,.025)}
+tbody tr:last-child{border-bottom:none}
+td{padding:.9rem 1.2rem;color:var(--muted)}
+td strong,td b{color:var(--text)}
+td.highlight-cell{color:var(--text);font-weight:600}
+td.val-purple{font-family:var(--font-h);font-weight:700;background:linear-gradient(135deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:1rem}
+tr.total-row td{background:rgba(124,58,237,.08);color:var(--text);font-weight:700;border-top:1px solid rgba(124,58,237,.3)}
+tr.sub-row td:first-child{padding-left:2.5rem;color:var(--subtle);font-size:.84rem}
+
+/* ALERT BOXES */
+.alert{padding:1.2rem 1.5rem;border-radius:8px;margin:1.5rem 0;font-size:.88rem;line-height:1.6}
+.alert.warning{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.3);color:#fcd34d}
+.alert.warning strong{color:#f59e0b}
+.alert.info{background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.25);color:#a5f3fc}
+.alert.info strong{color:var(--cyan)}
+.alert.success{background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.25);color:#bbf7d0}
+.alert.success strong{color:var(--green)}
+
+/* COMPARISON GRID */
+.vs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:1.5rem;align-items:start;margin:2rem 0}
+.vs-side{padding:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:12px}
+.vs-side.winner{border-color:rgba(124,58,237,.4);background:rgba(124,58,237,.06)}
+.vs-name{font-family:var(--font-h);font-weight:700;font-size:1rem;margin-bottom:1rem}
+.vs-name.nokb{background:linear-gradient(135deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.vs-divider{display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:800;font-size:1.2rem;color:var(--subtle);padding-top:1.5rem}
+.vs-item{display:flex;align-items:center;gap:.6rem;font-size:.85rem;color:var(--muted);margin-bottom:.6rem}
+.vs-item svg{flex-shrink:0}
+.check{color:var(--green)}
+.cross{color:var(--subtle)}
+
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:grid;grid-template-columns:120px auto 1fr;gap:1.5rem;padding:1.5rem 0;border-bottom:1px solid var(--border)}
+.tl-item:last-child{border-bottom:none}
+.tl-phase{font-family:var(--font-m);font-size:.72rem;color:var(--subtle);letter-spacing:.08em;padding-top:.2rem}
+.tl-dot-col{display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.tl-dot{width:12px;height:12px;border-radius:50%;background:rgba(124,58,237,.3);border:2px solid rgba(124,58,237,.5);flex-shrink:0;margin-top:.3rem}
+.tl-dot.active{background:var(--purple);border-color:var(--purple);box-shadow:0 0 12px var(--glow-p)}
+.tl-line{flex:1;width:2px;background:rgba(124,58,237,.2)}
+.tl-content h4{font-family:var(--font-h);font-weight:700;font-size:.95rem;margin-bottom:.4rem}
+.tl-content p{font-size:.84rem;color:var(--muted);line-height:1.6}
+.tl-milestone{font-family:var(--font-m);font-size:.72rem;color:var(--cyan);margin-top:.4rem;letter-spacing:.05em}
+
+/* CHECKLIST */
+.checklist{list-style:none;display:flex;flex-direction:column;gap:.6rem;margin:1rem 0}
+.checklist li{display:flex;align-items:flex-start;gap:.7rem;font-size:.9rem;color:var(--muted)}
+.checklist li::before{content:'✓';color:var(--green);font-weight:700;font-family:var(--font-m);flex-shrink:0;margin-top:.05rem}
+
+/* FOOTER */
+.page-footer{padding:3rem;text-align:center;border-top:1px solid var(--border);font-family:var(--font-m);font-size:.72rem;color:var(--subtle);letter-spacing:.08em}
+
+@media(max-width:768px){
+  .page-section{padding:3rem 1.5rem}
+  nav{padding:1rem 1.5rem}
+  .kpi-row{gap:1.5rem}
+  .vs-grid{grid-template-columns:1fr;grid-template-rows:auto auto auto}
+  .vs-divider{padding:0}
+  .tl-item{grid-template-columns:80px auto 1fr;gap:1rem}
+}
+</style>
 </head>
 <body>
 
-<!-- PAGE 1: EXECUTIVE SUMMARY (REVISED) -->
-<div class="page">
-    <div class="header">
-        <h1>🐻 NOKB WORLD</h1>
-        <p>Premium All-Inside Kids Play Facility</p>
-        <p>Luxembourg | Investment Proposal 2026</p>
-        <div class="version">VERSION 2 — REAL LUXEMBOURG MARKET RATES (March 2026)</div>
+<nav>
+  <div class="nav-brand">NOKB WORLD</div>
+  <div class="nav-tag">INVESTMENT PROPOSAL — V2 — MARCH 2026</div>
+</nav>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-bg"></div>
+  <div class="cover-grid"></div>
+  <div class="cover-inner">
+    <div class="cover-eyebrow">Investment Proposal · Version 2 · Real Market Numbers</div>
+    <h1>NOKB <span>World</span></h1>
+    <p class="cover-sub">Premium All-Inside Kids Play Facility · Luxembourg · 2026</p>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-val">€720K</div><div class="kpi-label">Startup</div></div>
+      <div class="kpi"><div class="kpi-val">€760K</div><div class="kpi-label">Year 1 Revenue</div></div>
+      <div class="kpi"><div class="kpi-val">31.6%</div><div class="kpi-label">EBITDA Margin</div></div>
+      <div class="kpi"><div class="kpi-val">Mo. 8–9</div><div class="kpi-label">Break-Even</div></div>
+      <div class="kpi"><div class="kpi-val">146%</div><div class="kpi-label">3-Year ROI</div></div>
     </div>
-
-    <div class="section-title">Executive Summary (Revised)</div>
-    <p style="margin-bottom: 20px; line-height: 1.8;">
-        NOKB World is a 3,500 m² all-inside premium kids play facility designed for children aged 2–12. This revised proposal reflects actual Luxembourg labor costs, real estate rates, and market positioning. Corrected from V1 to include realistic payroll, rent, and operational expenses.
-    </p>
-
-    <div class="highlight">
-        <strong>REVISED Investment Overview</strong><br>
-        Startup Investment: <span class="financial-key">€720,000</span> (was €450k)<br>
-        Year 1 Revenue: <span class="financial-key">€760,000</span> (was €612k)<br>
-        Year 1 EBITDA: <span class="financial-key">€240,000</span> (31.6%) (was €174k, 28.4%)<br>
-        Break-Even: <span class="financial-key">Month 8-9</span> (was Month 16)<br>
-        3-Year Cumulative Profit: <span class="financial-key">€1,050,000+</span><br>
-        3-Year ROI: <span class="financial-key">146%</span>
-    </div>
-
-    <div class="section-title">What Changed (V1 → V2)</div>
-    <table>
-        <tr>
-            <th>Component</th>
-            <th>V1 (Original)</th>
-            <th>V2 (Revised)</th>
-            <th>Reason</th>
-        </tr>
-        <tr>
-            <td>Startup Investment</td>
-            <td>€450,000</td>
-            <td>€720,000</td>
-            <td>Added working capital buffer (6 months @ €50k/mo)</td>
-        </tr>
-        <tr>
-            <td>Monthly Payroll</td>
-            <td>€21,000</td>
-            <td>€30,400</td>
-            <td>Real Luxembourg market rates: GM €4,500, supervisors €3,500, floor staff €3,200</td>
-        </tr>
-        <tr>
-            <td>Monthly Operating</td>
-            <td>€36,500</td>
-            <td>€49,500</td>
-            <td>Utilities €3k (heating), rent €3,500, maintenance €2,500, supplies €6k</td>
-        </tr>
-        <tr>
-            <td>Daily Pass Pricing</td>
-            <td>€16-18</td>
-            <td>€19-22</td>
-            <td>Premium positioning justified by Montana theme, still beats Yo-Yo €15.50-17</td>
-        </tr>
-        <tr>
-            <td>Event Room Revenue</td>
-            <td>€90,000/year</td>
-            <td>€130,000/year</td>
-            <td>Higher pricing (€500-1,000) + more frequent bookings (15-18/mo vs 12-15/mo)</td>
-        </tr>
-        <tr>
-            <td>Staffing Strategy</td>
-            <td>10 FTE day one</td>
-            <td>8 FTE ramp to 10 FTE month 6</td>
-            <td>Saves €18k in early months, better cash flow management</td>
-        </tr>
-    </table>
-
-    <div class="footer">
-        NOKB World | Investment Proposal V2 | Real Market Numbers | Page 1
-    </div>
+    <div class="cover-version">3,500 m² · All-Inside · Montana Theme · NOKB Community</div>
+  </div>
 </div>
 
-<!-- PAGE 2: FINANCIAL MODEL (REVISED) -->
-<div class="page">
-    <div class="section-title">Financial Model (Revised)</div>
+<!-- SECTION 1: EXECUTIVE SUMMARY -->
+<div style="padding:5rem 3rem;border-bottom:1px solid var(--border)">
+<div style="max-width:1100px;margin:0 auto">
+  <div class="section-num">01 — EXECUTIVE SUMMARY</div>
+  <h2 class="section-title">The Opportunity</h2>
+  <p class="section-desc">NOKB World is a 3,500 m² all-inside premium kids play facility for children aged 2–12. This V2 proposal reflects actual Luxembourg labor costs, realistic real estate rates, and corrected market positioning.</p>
 
-    <div style="margin: 20px 0;">
-        <strong style="color: #8B4513;">Monthly Operating Costs: €49,500 (Full Staffing)</strong>
+  <div class="callout-grid">
+    <div class="callout highlight">
+      <div class="callout-label">Startup Required</div>
+      <div class="callout-val purple">€720,000</div>
+      <div class="callout-note">+€270k from V1 — working capital buffer added</div>
     </div>
-
-    <table>
-        <tr>
-            <th>Category</th>
-            <th>Monthly Cost</th>
-            <th>Annual</th>
-            <th>Details (Luxembourg Market Rates)</th>
-        </tr>
-        <tr>
-            <td><strong>Payroll (10 FTE)</strong></td>
-            <td><strong>€30,400</strong></td>
-            <td><strong>€364,800</strong></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td style="padding-left: 30px;">General Manager</td>
-            <td>€6,390</td>
-            <td>€76,680</td>
-            <td>€4,500 gross + 42% EU contribution</td>
-        </tr>
-        <tr>
-            <td style="padding-left: 30px;">Facility Supervisors (2x)</td>
-            <td>€9,940</td>
-            <td>€119,280</td>
-            <td>€3,500 ea gross + 42%</td>
-        </tr>
-        <tr>
-            <td style="padding-left: 30px;">Floor Staff (4x)</td>
-            <td>€18,176</td>
-            <td>€218,112</td>
-            <td>€3,200 ea gross + 42%</td>
-        </tr>
-        <tr>
-            <td style="padding-left: 30px;">Café Manager</td>
-            <td>€4,970</td>
-            <td>€59,640</td>
-            <td>€3,500 gross + 42%</td>
-        </tr>
-        <tr>
-            <td style="padding-left: 30px;">Admin/Marketing (PT)</td>
-            <td>€2,130</td>
-            <td>€25,560</td>
-            <td>€1,500 gross + 42%</td>
-        </tr>
-        <tr>
-            <td style="padding-left: 30px;">Cleaning/Maintenance (PT)</td>
-            <td>€2,556</td>
-            <td>€30,672</td>
-            <td>€1,800 gross + 42%</td>
-        </tr>
-        <tr>
-            <td>Rent (3,500 m²)</td>
-            <td>€3,500</td>
-            <td>€42,000</td>
-            <td>€12/m² annual (realistic for quality space, Findel/Limpertsberg zones)</td>
-        </tr>
-        <tr>
-            <td>Utilities (heating, electric, water, AC)</td>
-            <td>€3,000</td>
-            <td>€36,000</td>
-            <td>Large facility, climate-controlled year-round. Luxembourg heating significant.</td>
-        </tr>
-        <tr>
-            <td>Maintenance & Equipment</td>
-            <td>€2,500</td>
-            <td>€30,000</td>
-            <td>Premium equipment maintenance, regular inspections, repairs</td>
-        </tr>
-        <tr>
-            <td>Insurance</td>
-            <td>€2,000</td>
-            <td>€24,000</td>
-            <td>Child-focused facility = higher premiums</td>
-        </tr>
-        <tr>
-            <td>Marketing & Community</td>
-            <td>€2,100</td>
-            <td>€25,200</td>
-            <td>Digital, local partnerships, NOKB community events</td>
-        </tr>
-        <tr>
-            <td>Supplies, Food, Admin</td>
-            <td>€6,000</td>
-            <td>€72,000</td>
-            <td>Café inventory, cleaning supplies, admin, contingency</td>
-        </tr>
-        <tr style="background: #f0e6d2; font-weight: 600;">
-            <td><strong>TOTAL MONTHLY</strong></td>
-            <td><strong>€49,500</strong></td>
-            <td><strong>€594,000</strong></td>
-            <td><strong>Annual at full 10 FTE</strong></td>
-        </tr>
-    </table>
-
-    <div style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-left: 3px solid #8B4513;">
-        <strong>Staffing Ramp (First 6 Months)</strong><br>
-        Months 1-3: 8 FTE @ €24,320/mo = €72,960<br>
-        Months 4-12: 10 FTE @ €30,400/mo = €274,320<br>
-        Year 1 Total Payroll: €347,280 (vs €364,800 at full year)
+    <div class="callout highlight">
+      <div class="callout-label">Year 1 Revenue</div>
+      <div class="callout-val purple">€760,000</div>
+      <div class="callout-note">Passes + events + café at premium pricing</div>
     </div>
-
-    <div class="footer">
-        NOKB World | Investment Proposal V2 | Page 2
+    <div class="callout success">
+      <div class="callout-label">Year 1 EBITDA</div>
+      <div class="callout-val">€240,040</div>
+      <div class="callout-note">31.6% margin — healthy for hospitality</div>
     </div>
+    <div class="callout success">
+      <div class="callout-label">3-Year Profit</div>
+      <div class="callout-val">€1,050,040</div>
+      <div class="callout-note">Cumulative. 146% ROI by end Year 3.</div>
+    </div>
+  </div>
+
+  <div class="alert info">
+    <strong>What changed V1 → V2:</strong> Real Luxembourg payroll (GM €4,500 gross, floor staff €3,200 + 42% employer contributions), realistic rent (€12/m²), corrected utility costs, premium pricing justified by experience. Break-even improved from Month 16 to Month 8–9.
+  </div>
+</div>
 </div>
 
-<!-- PAGE 3: YEAR 1 REVENUE & PROJECTIONS -->
-<div class="page">
-    <div class="section-title">Year 1 Revenue (Revised – Premium Positioning)</div>
+<!-- SECTION 2: FINANCIAL MODEL -->
+<div style="padding:5rem 3rem;border-bottom:1px solid var(--border)">
+<div style="max-width:1100px;margin:0 auto">
+  <div class="section-num">02 — FINANCIAL MODEL</div>
+  <h2 class="section-title">Real Luxembourg Numbers</h2>
+  <p class="section-desc">All figures based on actual market rates. Payroll includes 42% EU employer contributions throughout.</p>
 
+  <div class="table-wrap">
     <table>
-        <tr>
-            <th>Revenue Stream</th>
-            <th>Unit Price</th>
-            <th>Monthly Volume</th>
-            <th>Monthly Revenue</th>
-            <th>Annual</th>
-        </tr>
-        <tr>
-            <td>Daily Passes (Premium Positioning)</td>
-            <td>€19 weekday / €22 weekend</td>
-            <td>2,000 visits/mo</td>
-            <td>€40,000</td>
-            <td>€480,000</td>
-        </tr>
-        <tr>
-            <td>Event Room Rentals</td>
-            <td>€500-1,000/event (€800-1,200 for birthday packages)</td>
-            <td>15-18 events/month</td>
-            <td>€10,833</td>
-            <td>€130,000</td>
-        </tr>
-        <tr>
-            <td>Café (Premium Beverages & Food)</td>
-            <td>€6-14/transaction</td>
-            <td>1,800 transactions/mo</td>
-            <td>€12,500</td>
-            <td>€150,000</td>
-        </tr>
-        <tr style="background: #f0e6d2; font-weight: 600;">
-            <td colspan="2"><strong>TOTAL MONTHLY</strong></td>
-            <td></td>
-            <td><strong>€63,333</strong></td>
-            <td><strong>€760,000</strong></td>
-        </tr>
+      <thead><tr><th>Category</th><th>Monthly</th><th>Annual</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Payroll — 10 FTE (full)</strong></td><td class="highlight-cell">€30,400</td><td class="highlight-cell">€364,800</td><td>Incl. 42% employer contributions</td></tr>
+        <tr class="sub-row"><td>General Manager</td><td>€6,390</td><td>€76,680</td><td>€4,500 gross + 42%</td></tr>
+        <tr class="sub-row"><td>Facility Supervisors (×2)</td><td>€9,940</td><td>€119,280</td><td>€3,500 ea gross + 42%</td></tr>
+        <tr class="sub-row"><td>Floor Staff (×4)</td><td>€18,176</td><td>€218,112</td><td>€3,200 ea gross + 42%</td></tr>
+        <tr class="sub-row"><td>Café Manager</td><td>€4,970</td><td>€59,640</td><td>€3,500 gross + 42%</td></tr>
+        <tr class="sub-row"><td>Admin / Marketing (PT)</td><td>€2,130</td><td>€25,560</td><td>€1,500 gross + 42%</td></tr>
+        <tr class="sub-row"><td>Cleaning / Maintenance (PT)</td><td>€2,556</td><td>€30,672</td><td>€1,800 gross + 42%</td></tr>
+        <tr><td>Rent (3,500 m²)</td><td>€3,500</td><td>€42,000</td><td>€12/m² annual — Findel/Limpertsberg zone</td></tr>
+        <tr><td>Utilities (heating, electric, AC)</td><td>€3,000</td><td>€36,000</td><td>Large climate-controlled facility</td></tr>
+        <tr><td>Maintenance & Equipment</td><td>€2,500</td><td>€30,000</td><td>Premium equipment upkeep</td></tr>
+        <tr><td>Insurance</td><td>€2,000</td><td>€24,000</td><td>Child facility = higher premiums</td></tr>
+        <tr><td>Marketing & Community</td><td>€2,100</td><td>€25,200</td><td>Digital + NOKB community events</td></tr>
+        <tr><td>Supplies, Food, Admin</td><td>€6,000</td><td>€72,000</td><td>Café inventory, cleaning, contingency</td></tr>
+        <tr class="total-row"><td>TOTAL (full 10 FTE)</td><td class="val-purple">€49,500</td><td class="val-purple">€594,000</td><td>Annual at full staffing</td></tr>
+      </tbody>
     </table>
+  </div>
 
-    <div class="highlight">
-        <strong>Year 1 Financial Summary (With Staffing Ramp)</strong><br>
-        Total Revenue: €760,000<br>
-        Operating Costs (with 8→10 FTE ramp): €519,960<br>
-        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br>
-        <strong>Year 1 EBITDA: €240,040 (31.6% margin)</strong><br>
-        Break-Even Month: 8-9
-    </div>
+  <div class="alert info">
+    <strong>Staffing Ramp Strategy:</strong> Months 1–3 at 8 FTE (€24,320/mo = €72,960). Months 4–12 at 10 FTE (€30,400/mo = €274,320). Year 1 total payroll: €347,280. Saves €18k in early months and preserves working capital.
+  </div>
 
-    <div class="section-title">3-Year Financial Projection</div>
-
+  <h3 style="font-family:var(--font-h);font-size:1.3rem;font-weight:700;margin:2rem 0 1rem">Year 1 Revenue Streams</h3>
+  <div class="table-wrap">
     <table>
-        <tr>
-            <th>Metric</th>
-            <th>Year 1</th>
-            <th>Year 2</th>
-            <th>Year 3</th>
-        </tr>
-        <tr>
-            <td>Total Revenue</td>
-            <td>€760,000</td>
-            <td>€950,000</td>
-            <td>€1,100,000</td>
-        </tr>
-        <tr>
-            <td>Operating Costs</td>
-            <td>€519,960</td>
-            <td>€594,000</td>
-            <td>€650,000</td>
-        </tr>
-        <tr>
-            <td>EBITDA</td>
-            <td>€240,040</td>
-            <td>€356,000</td>
-            <td>€450,000</td>
-        </tr>
-        <tr style="background: #f0e6d2; font-weight: 600;">
-            <td>EBITDA Margin</td>
-            <td>31.6%</td>
-            <td>37.5%</td>
-            <td>40.9%</td>
-        </tr>
-        <tr>
-            <td>Cumulative Profit (3yr)</td>
-            <td colspan="3" style="background: #e8f5e9; font-weight: 600;">€1,050,040</td>
-        </tr>
+      <thead><tr><th>Stream</th><th>Unit Price</th><th>Monthly Volume</th><th>Monthly Rev</th><th>Annual</th></tr></thead>
+      <tbody>
+        <tr><td>Daily Passes</td><td>€19 weekday / €22 weekend</td><td>2,000 visits</td><td>€40,000</td><td class="highlight-cell">€480,000</td></tr>
+        <tr><td>Event Room Rentals</td><td>€500–1,000/event</td><td>15–18 events</td><td>€10,833</td><td class="highlight-cell">€130,000</td></tr>
+        <tr><td>Café</td><td>€6–14/transaction</td><td>1,800 transactions</td><td>€12,500</td><td class="highlight-cell">€150,000</td></tr>
+        <tr class="total-row"><td colspan="3">Total Year 1 Revenue</td><td class="val-purple">€63,333</td><td class="val-purple">€760,000</td></tr>
+      </tbody>
     </table>
+  </div>
 
-    <div class="highlight">
-        <strong>Break-Even Analysis (Revised)</strong><br>
-        Startup Investment: €720,000<br>
-        Year 1 EBITDA: €240,040<br>
-        Year 2 EBITDA: €356,000<br>
-        Payback Period: ~2.1 years (very healthy)<br>
-        3-Year ROI: 146%
-    </div>
+  <div class="callout-grid" style="margin-top:1.5rem">
+    <div class="callout success"><div class="callout-label">Year 1 EBITDA</div><div class="callout-val">€240,040</div><div class="callout-note">31.6% margin</div></div>
+    <div class="callout success"><div class="callout-label">Break-Even</div><div class="callout-val">Month 8–9</div><div class="callout-note">Conservative estimate</div></div>
+    <div class="callout success"><div class="callout-label">Payback Period</div><div class="callout-val">~2.1 yrs</div><div class="callout-note">Very healthy for hospitality</div></div>
+  </div>
 
-    <div class="footer">
-        NOKB World | Investment Proposal V2 | Page 3
-    </div>
+  <h3 style="font-family:var(--font-h);font-size:1.3rem;font-weight:700;margin:2rem 0 1rem">3-Year Projection</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Metric</th><th>Year 1</th><th>Year 2</th><th>Year 3</th></tr></thead>
+      <tbody>
+        <tr><td>Revenue</td><td>€760,000</td><td>€950,000</td><td>€1,100,000</td></tr>
+        <tr><td>Operating Costs</td><td>€519,960</td><td>€594,000</td><td>€650,000</td></tr>
+        <tr><td>EBITDA</td><td>€240,040</td><td>€356,000</td><td>€450,000</td></tr>
+        <tr class="total-row"><td>Margin</td><td class="val-purple">31.6%</td><td class="val-purple">37.5%</td><td class="val-purple">40.9%</td></tr>
+        <tr><td colspan="2">Cumulative 3-Year Profit</td><td colspan="2" class="highlight-cell" style="font-size:1rem;font-family:var(--font-h);font-weight:700">€1,050,040 · 146% ROI</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 </div>
 
-<!-- PAGE 4: STARTUP COSTS BREAKDOWN -->
-<div class="page">
-    <div class="section-title">Startup Investment Breakdown: €720,000</div>
-
+<!-- SECTION 3: STARTUP COSTS -->
+<div style="padding:5rem 3rem;border-bottom:1px solid var(--border)">
+<div style="max-width:1100px;margin:0 auto">
+  <div class="section-num">03 — CAPITAL REQUIREMENTS</div>
+  <h2 class="section-title">Startup: €720,000</h2>
+  <div class="table-wrap">
     <table>
-        <tr>
-            <th>Category</th>
-            <th>Amount</th>
-            <th>Details</th>
-        </tr>
-        <tr>
-            <td>Land/Lease Deposit & Legal</td>
-            <td>€20,000</td>
-            <td>First month rent + deposit (€3,500 × 2 months = €7,000)</td>
-        </tr>
-        <tr>
-            <td>Build-Out & Design</td>
-            <td>€160,000</td>
-            <td>Architectural plans, flooring, paint, lighting, climate control</td>
-        </tr>
-        <tr>
-            <td>Equipment (Play Structures)</td>
-            <td>€120,000</td>
-            <td>Premium suppliers: Roto, Lappset (trampolines, climbing, balls, inflatables)</td>
-        </tr>
-        <tr>
-            <td>Café Setup</td>
-            <td>€45,000</td>
-            <td>POS system, espresso machine, refrigeration, counter, prep area</td>
-        </tr>
-        <tr>
-            <td>Permits, Licensing, Compliance</td>
-            <td>€25,000</td>
-            <td>Building permits, child protection license, food license, safety inspections</td>
-        </tr>
-        <tr>
-            <td>Insurance & Legal (Setup)</td>
-            <td>€15,000</td>
-            <td>Liability insurance, property insurance, legal setup</td>
-        </tr>
-        <tr>
-            <td>Marketing Launch</td>
-            <td>€35,000</td>
-            <td>Grand opening campaign, digital ads, local partnerships, community events</td>
-        </tr>
-        <tr>
-            <td>Working Capital (6 months @ €50k/mo)</td>
-            <td>€300,000</td>
-            <td>Safety buffer for operations ramp before profitability. Essential.</td>
-        </tr>
-        <tr style="background: #f0e6d2; font-weight: 600;">
-            <td><strong>TOTAL STARTUP</strong></td>
-            <td><strong>€720,000</strong></td>
-            <td></td>
-        </tr>
+      <thead><tr><th>Line Item</th><th>Amount</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Lease Deposit & Legal</td><td>€20,000</td><td>First month + deposit</td></tr>
+        <tr><td>Build-Out & Design</td><td>€160,000</td><td>Flooring, lighting, climate control, finishes</td></tr>
+        <tr><td>Play Equipment</td><td>€120,000</td><td>Roto, Lappset — EU EN 1176/1177 compliant</td></tr>
+        <tr><td>Café Setup</td><td>€45,000</td><td>POS, espresso, refrigeration, prep area</td></tr>
+        <tr><td>Permits & Licensing</td><td>€25,000</td><td>Building, child protection (MENJE), food, safety</td></tr>
+        <tr><td>Insurance & Legal</td><td>€15,000</td><td>Liability + property setup</td></tr>
+        <tr><td>Marketing Launch</td><td>€35,000</td><td>Grand opening, digital, community events</td></tr>
+        <tr class="total-row"><td>Working Capital (6 months)</td><td class="val-purple">€300,000</td><td>€50k/mo buffer — non-negotiable</td></tr>
+        <tr class="total-row"><td><strong>Total</strong></td><td class="val-purple">€720,000</td><td></td></tr>
+      </tbody>
     </table>
-
-    <div class="highlight-red">
-        <strong>⚠️ Important: Working Capital</strong><br>
-        The €300k working capital buffer is critical. You won't hit €240k EBITDA until Month 8-9. Without this cushion, you're underwater for 6+ months. This is not optional.
-    </div>
-
-    <div class="section-title">Pricing Strategy (vs Yo-Yo)</div>
-
-    <table>
-        <tr>
-            <th>Segment</th>
-            <th>Yo-Yo Luxembourg</th>
-            <th>NOKB World</th>
-            <th>Premium Justification</th>
-        </tr>
-        <tr>
-            <td>Weekday Pass (2-hour)</td>
-            <td>€15.50</td>
-            <td>€19</td>
-            <td>Montana theme, better equipment, 1:12 staff ratio</td>
-        </tr>
-        <tr>
-            <td>Weekend Pass (2-hour)</td>
-            <td>€17</td>
-            <td>€22</td>
-            <td>Peak premium, limited capacity, premium experience</td>
-        </tr>
-        <tr>
-            <td>Event Room (Birthday Party)</td>
-            <td>Not available</td>
-            <td>€800-1,200</td>
-            <td>Dedicated space, catering support, staff supervision</td>
-        </tr>
-        <tr>
-            <td>Café (Coffee)</td>
-            <td>€3-4</td>
-            <td>€5-6</td>
-            <td>Premium roast, specialty drinks, parent experience</td>
-        </tr>
-        <tr>
-            <td>Café (Pastry)</td>
-            <td>€2-3</td>
-            <td>€4-5</td>
-            <td>Fresh-baked, quality ingredients, premium positioning</td>
-        </tr>
-    </table>
-
-    <div class="footer">
-        NOKB World | Investment Proposal V2 | Page 4
-    </div>
+  </div>
+  <div class="alert warning"><strong>Critical:</strong> The €300k working capital buffer is not optional. You won't break even until Month 8–9. Without this cushion, operations go underwater in the ramp period. This line item is the difference between success and a failed launch.</div>
+</div>
 </div>
 
-<!-- PAGE 5: COMPETITIVE ANALYSIS & MARKET -->
-<div class="page">
-    <div class="section-title">Competitive Positioning: NOKB World vs Yo-Yo</div>
-
-    <table>
-        <tr>
-            <th>Dimension</th>
-            <th>Yo-Yo Luxembourg</th>
-            <th>NOKB World</th>
-            <th>NOKB Advantage</th>
-        </tr>
-        <tr>
-            <td><strong>Facility Size</strong></td>
-            <td>1,500-2,000 m²</td>
-            <td>3,500 m² (all-inside)</td>
-            <td>2x capacity, weather-proof</td>
-        </tr>
-        <tr>
-            <td><strong>Play Experience</strong></td>
-            <td>Standard equipment</td>
-            <td>Montana-themed premium finishes</td>
-            <td>Immersive experience justifies pricing</td>
-        </tr>
-        <tr>
-            <td><strong>Event Infrastructure</strong></td>
-            <td>No dedicated rooms</td>
-            <td>6 dedicated rooms (€130k/year)</td>
-            <td>€130k revenue Yo-Yo can't access</td>
-        </tr>
-        <tr>
-            <td><strong>Parent Amenities</strong></td>
-            <td>Minimal</td>
-            <td>Premium café lounge with sightlines</td>
-            <td>€150k café revenue + parent retention</td>
-        </tr>
-        <tr>
-            <td><strong>Brand Positioning</strong></td>
-            <td>Generic kids play</td>
-            <td>NOKB community + NFT integration</td>
-            <td>Community moat, built-in customer base</td>
-        </tr>
-        <tr>
-            <td><strong>Weather Dependency</strong></td>
-            <td>Outdoor option (variable)</td>
-            <td>All-inside (consistent)</td>
-            <td>Year-round predictable utilization</td>
-        </tr>
-        <tr>
-            <td><strong>Pricing Ceiling</strong></td>
-            <td>€15.50-17 (established)</td>
-            <td>€19-22 (premium)</td>
-            <td>1-2% premium justified, acceptable market</td>
-        </tr>
-    </table>
-
-    <div class="highlight">
-        <strong>Market Position Summary</strong><br>
-        NOKB World ≠ Yo-Yo 2.0. We're the premium all-inside alternative with:<br>
-        • 2x facility size<br>
-        • Dedicated event infrastructure (€130k unique revenue)<br>
-        • Montana Montana-themed experience<br>
-        • Community brand loyalty (3,000+ NOKB holders)<br>
-        • Year-round operations (no weather closures)
+<!-- SECTION 4: COMPETITIVE ANALYSIS -->
+<div style="padding:5rem 3rem;border-bottom:1px solid var(--border)">
+<div style="max-width:1100px;margin:0 auto">
+  <div class="section-num">04 — COMPETITIVE ANALYSIS</div>
+  <h2 class="section-title">NOKB World vs Yo-Yo</h2>
+  <div class="vs-grid">
+    <div class="vs-side">
+      <div class="vs-name">Yo-Yo Luxembourg</div>
+      <div class="vs-item"><span class="cross">—</span> 1,500–2,000 m²</div>
+      <div class="vs-item"><span class="cross">—</span> Hybrid indoor/outdoor</div>
+      <div class="vs-item"><span class="cross">—</span> No dedicated event rooms</div>
+      <div class="vs-item"><span class="cross">—</span> Standard equipment</div>
+      <div class="vs-item"><span class="cross">—</span> Minimal parent amenities</div>
+      <div class="vs-item"><span class="cross">—</span> €15.50–17 pricing</div>
     </div>
-
-    <div class="section-title">Luxembourg Market Opportunity</div>
-
-    <table>
-        <tr>
-            <th>Metric</th>
-            <th>Value</th>
-        </tr>
-        <tr>
-            <td>Luxembourg Population</td>
-            <td>645,000</td>
-        </tr>
-        <tr>
-            <td>Children 2-12 Years (Primary Demo)</td>
-            <td>~95,000</td>
-        </tr>
-        <tr>
-            <td>Annual Family Entertainment Budget</td>
-            <td>€500-1,500/child/year</td>
-        </tr>
-        <tr>
-            <td>Total Addressable Market (TAM)</td>
-            <td>€45-60M/year</td>
-        </tr>
-        <tr>
-            <td>NOKB Year 1 Target</td>
-            <td>€760k (1.3-1.7% TAM share)</td>
-        </tr>
-        <tr>
-            <td>NOKB Year 3 Target</td>
-            <td>€1,100k (1.8-2.4% TAM share)</td>
-        </tr>
-        <tr>
-            <td>Competitive Penetration</td>
-            <td>Realistic without aggressive expansion</td>
-        </tr>
-    </table>
-
-    <div class="footer">
-        NOKB World | Investment Proposal V2 | Page 5
+    <div class="vs-divider">VS</div>
+    <div class="vs-side winner">
+      <div class="vs-name nokb">NOKB World</div>
+      <div class="vs-item"><span class="check">✓</span> 3,500 m² — 2x capacity</div>
+      <div class="vs-item"><span class="check">✓</span> All-inside — year-round ops</div>
+      <div class="vs-item"><span class="check">✓</span> 6 dedicated rooms — €130k/yr unique revenue</div>
+      <div class="vs-item"><span class="check">✓</span> Montana-themed premium experience</div>
+      <div class="vs-item"><span class="check">✓</span> Premium café lounge with sightlines</div>
+      <div class="vs-item"><span class="check">✓</span> €19–22 premium (justified)</div>
     </div>
+  </div>
+  <div class="alert success"><strong>The edge:</strong> NOKB isn't trying to out-Yo-Yo Yo-Yo. We're serving a different customer — one who wants an immersive themed experience, dedicated event space, and a premium café. The €130k/year from event rooms alone is a revenue stream Yo-Yo structurally cannot access.</div>
+
+  <h3 style="font-family:var(--font-h);font-size:1.3rem;font-weight:700;margin:2rem 0 1rem">Luxembourg Market Size</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Population</td><td class="highlight-cell">645,000</td></tr>
+        <tr><td>Children 2–12 (primary demo)</td><td class="highlight-cell">~95,000</td></tr>
+        <tr><td>Annual family entertainment budget</td><td class="highlight-cell">€500–1,500/child/year</td></tr>
+        <tr><td>Total Addressable Market</td><td class="highlight-cell">€45–60M/year</td></tr>
+        <tr><td>NOKB Year 1 target (TAM share)</td><td class="highlight-cell">€760k — 1.3–1.7%</td></tr>
+        <tr><td>NOKB Year 3 target (TAM share)</td><td class="highlight-cell">€1.1M — 1.8–2.4%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 </div>
 
-<!-- PAGE 6: REGULATORY & GO-TO-MARKET -->
-<div class="page">
-    <div class="section-title">Regulatory Timeline & Compliance (Luxembourg)</div>
-
-    <div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-left: 3px solid #8B4513;">
-        <strong>Opening Timeline: 9-11 Months (Q1 2027)</strong>
+<!-- SECTION 5: TIMELINE & COMPLIANCE -->
+<div style="padding:5rem 3rem;border-bottom:1px solid var(--border)">
+<div style="max-width:1100px;margin:0 auto">
+  <div class="section-num">05 — TIMELINE & COMPLIANCE</div>
+  <h2 class="section-title">9–11 Months to Open</h2>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-phase">Months 0–3</div>
+      <div class="tl-dot-col"><div class="tl-dot active"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><h4>Planning & Capital</h4><p>Secure €720k. Identify site (Findel/Limpertsberg preferred). Engage architect, draft plans.</p><div class="tl-milestone">→ Milestone: Site locked, funding committed</div></div>
     </div>
-
-    <table>
-        <tr>
-            <th>Phase</th>
-            <th>Duration</th>
-            <th>Key Actions</th>
-            <th>Milestones</th>
-        </tr>
-        <tr>
-            <td>Planning & Capital</td>
-            <td>Months 0-3</td>
-            <td>• Secure €720k funding<br>• Identify site (Findel/Limpertsberg)<br>• Architect plans</td>
-            <td>Site locked, plans finalized</td>
-        </tr>
-        <tr>
-            <td>Permitting & Licensing</td>
-            <td>Months 3-6</td>
-            <td>• Building permit application<br>• Child Protection License (via MENJE, 4-6 weeks)<br>• Food license + HACCP</td>
-            <td>All permits approved</td>
-        </tr>
-        <tr>
-            <td>Construction & Fit-Out</td>
-            <td>Months 6-9</td>
-            <td>• Equipment installation<br>• Safety inspections<br>• Utilities setup</td>
-            <td>Facility ready for operation</td>
-        </tr>
-        <tr>
-            <td>Soft Opening</td>
-            <td>Months 9-10</td>
-            <td>• Staff training<br>• Systems testing<br>• Community preview events</td>
-            <td>Staff certified, systems live</td>
-        </tr>
-        <tr style="background: #f0e6d2; font-weight: 600;">
-            <td>Grand Opening</td>
-            <td>Month 10-11</td>
-            <td>• Full public launch<br>• Marketing push<br>• Revenue ramp</td>
-            <td>Operations at 40-50% utilization</td>
-        </tr>
-    </table>
-
-    <div class="section-title">Compliance & Safety Requirements</div>
-
-    <ul style="margin-left: 20px; line-height: 1.8; font-size: 13px;">
-        <li><strong>Child Protection License:</strong> Required for any facility serving children. 4-6 weeks via MENJE (Ministry of Education). Annual renewal.</li>
-        <li><strong>Safety Standards:</strong> EU EN 1176/1177 (playground equipment). Annual inspections mandatory.</li>
-        <li><strong>Staff-to-Child Ratio:</strong> 1:15 standard (Luxembourg). NOKB budgets 1:12 for premium experience.</li>
-        <li><strong>Food Safety:</strong> HACCP certification (€3-5k) + staff handler training (ongoing).</li>
-        <li><strong>Insurance:</strong> Public liability (required), property, staff training documentation.</li>
-        <li><strong>Building Code:</strong> Standard commercial occupancy + child facility add-ons (egress, safety zones, etc.).</li>
-    </ul>
-
-    <div class="section-title">Go-To-Market Strategy</div>
-
-    <table>
-        <tr>
-            <th>Tactic</th>
-            <th>Timeline</th>
-            <th>Target</th>
-            <th>Expected Impact</th>
-        </tr>
-        <tr>
-            <td>Community Launch (NOKB Holders)</td>
-            <td>Week 1-8</td>
-            <td>3,000+ holders</td>
-            <td>20% opening discount, exclusive event room access, word-of-mouth</td>
-        </tr>
-        <tr>
-            <td>Local Partnerships (Schools/Daycares)</td>
-            <td>Month 2-4</td>
-            <td>20-30 institutions</td>
-            <td>Bulk passes €12-14/child, regular group bookings</td>
-        </tr>
-        <tr>
-            <td>Digital Marketing</td>
-            <td>Ongoing (€2,100/mo)</td>
-            <td>Local search, social</td>
-            <td>Google Ads 40%, Facebook/Instagram 35%, local influencers 25%</td>
-        </tr>
-        <tr>
-            <td>Event Room Focus</td>
-            <td>Month 3+</td>
-            <td>15-18 events/month</td>
-            <td>Corporate team-building, birthday packages, family meetups</td>
-        </tr>
-        <tr>
-            <td>Loyalty Program</td>
-            <td>Month 2+</td>
-            <td>Monthly members</td>
-            <td>10 passes = 1 free, café discounts, repeat usage</td>
-        </tr>
-    </table>
-
-    <div class="highlight">
-        <strong>Success Factors (Key)</strong><br>
-        ✓ Premium pricing justified by experience<br>
-        ✓ Event room utilization (€130k/year unique revenue)<br>
-        ✓ Staffing ramp (don't go full 10 FTE day one)<br>
-        ✓ Community integration (NOKB holder advantage)<br>
-        ✓ All-inside consistency (no weather closures)
+    <div class="tl-item">
+      <div class="tl-phase">Months 3–6</div>
+      <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><h4>Permitting & Licensing</h4><p>Building permit application. Child Protection License via MENJE (4–6 weeks). Food license + HACCP certification. Insurance procurement.</p><div class="tl-milestone">→ Milestone: All permits approved</div></div>
     </div>
-
-    <div class="footer">
-        NOKB World | Investment Proposal V2 | Page 6 (Final)
+    <div class="tl-item">
+      <div class="tl-phase">Months 6–9</div>
+      <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><h4>Construction & Fit-Out</h4><p>Equipment installation (Roto, Lappset). Interior build-out. Climate control. Safety inspections + EU EN 1176/1177 certification.</p><div class="tl-milestone">→ Milestone: Facility inspection passed</div></div>
     </div>
+    <div class="tl-item">
+      <div class="tl-phase">Months 9–10</div>
+      <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><h4>Soft Opening</h4><p>Staff onboarding. Systems testing. NOKB community preview events — holder exclusives, 20% opening discount.</p><div class="tl-milestone">→ Milestone: Staff certified, 8 FTE operations live</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">Month 10–11</div>
+      <div class="tl-dot-col"><div class="tl-dot active"></div></div>
+      <div class="tl-content"><h4>Grand Opening — Q1 2027</h4><p>Full public launch. Digital push. Local partnerships active. Revenue ramp begins — target 40–50% weekday utilization by Month 3.</p><div class="tl-milestone">→ Milestone: Operations steady state, event rooms booking</div></div>
+    </div>
+  </div>
 </div>
+</div>
+
+<!-- SECTION 6: GO-TO-MARKET -->
+<div style="padding:5rem 3rem">
+<div style="max-width:1100px;margin:0 auto">
+  <div class="section-num">06 — GO-TO-MARKET</div>
+  <h2 class="section-title">How We Win</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Tactic</th><th>Timeline</th><th>Target</th><th>Expected Impact</th></tr></thead>
+      <tbody>
+        <tr><td><strong>NOKB Community Launch</strong></td><td>Weeks 1–8</td><td>3,000+ holders</td><td>20% discount, exclusive access, word-of-mouth flywheel</td></tr>
+        <tr><td><strong>School & Daycare Partnerships</strong></td><td>Months 2–4</td><td>20–30 institutions</td><td>Bulk passes €12–14/child, predictable group bookings</td></tr>
+        <tr><td><strong>Digital Marketing</strong></td><td>Ongoing €2,100/mo</td><td>Local families</td><td>Google Ads 40%, Facebook/IG 35%, local influencers 25%</td></tr>
+        <tr><td><strong>Event Room Focus</strong></td><td>Month 3+</td><td>Corporate + families</td><td>15–18 events/month = €130k/year by Month 6</td></tr>
+        <tr><td><strong>Loyalty Program</strong></td><td>Month 2+</td><td>Repeat visitors</td><td>10 passes = 1 free. Café discounts. Data capture.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert success" style="margin-top:2rem">
+    <strong>Bottom Line:</strong> €720k in → €240k Year 1 EBITDA → €1,050,040 cumulative profit by end Year 3. Break-even Month 8–9. Community moat from 3,000+ NOKB holders no competitor can replicate. 146% ROI. Numbers work. Build it.
+  </div>
+
+  <ul class="checklist" style="margin-top:1.5rem">
+    <li>Premium location justified by premium experience</li>
+    <li>Event room infrastructure is a unique revenue moat</li>
+    <li>All-inside design means no weather closures, consistent cash flow</li>
+    <li>1:12 staff ratio beats industry standard of 1:15</li>
+    <li>NOKB holder base = built-in marketing channel from day one</li>
+    <li>Montana theme justifies €1–2 premium over Yo-Yo pricing</li>
+  </ul>
+</div>
+</div>
+
+<div class="page-footer">NOKB WORLD · INVESTMENT PROPOSAL V2 · REAL LUXEMBOURG MARKET RATES · MARCH 2026</div>
 
 </body>
 </html>
